@@ -1,124 +1,132 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Custom Prompts on Arthurs Blogs</title>
-        <link>http://localhost:1313/tags/custom-prompts/</link>
-        <description>Recent content in Custom Prompts on Arthurs Blogs</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Sun, 13 Jul 2025 22:10:00 +0200</lastBuildDate><atom:link href="http://localhost:1313/tags/custom-prompts/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Customizing GitHub Copilot with Custom Instructions and Prompt Files</title>
-        <link>http://localhost:1313/post/github-copilot-custom-prompts/copilot_custom_prompts/</link>
-        <pubDate>Sun, 13 Jul 2025 22:10:00 +0200</pubDate>
-        
-        <guid>http://localhost:1313/post/github-copilot-custom-prompts/copilot_custom_prompts/</guid>
-        <description>&lt;h1 id=&#34;customizing-github-copilot-with-custom-instructions-and-prompt-files&#34;&gt;Customizing GitHub Copilot with Custom Instructions and Prompt Files&lt;/h1&gt;
-&lt;p&gt;GitHub Copilot Chat can be tailored to your project’s needs using &lt;strong&gt;custom instructions&lt;/strong&gt; and &lt;strong&gt;prompt files&lt;/strong&gt;. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a &lt;code&gt;.prompt.md&lt;/code&gt; suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.&lt;/p&gt;
-&lt;h2 id=&#34;custom-instructions-what-and-how&#34;&gt;Custom Instructions: What and How&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Custom instructions&lt;/strong&gt; are Markdown files (e.g. &lt;code&gt;.github/copilot-instructions.md&lt;/code&gt; or &lt;code&gt;*.instructions.md&lt;/code&gt;) that describe your coding practices, project requirements, or task-specific rules. For example, you might tell Copilot to “use XUnit for C# tests” or “format JSON with 2-space indentation”. When you open a Copilot Chat, VS Code automatically includes all instruction files whose patterns match the current context (e.g. file type or folder). This means you don’t have to repeat the same guidelines in every prompt – Copilot “remembers” them from your instruction files.&lt;/p&gt;
-&lt;p&gt;To configure custom instructions:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;File format &amp;amp; location:&lt;/strong&gt; Create a Markdown file with a &lt;code&gt;.instructions.md&lt;/code&gt; suffix. By default, workspace instructions go under &lt;code&gt;.github/instructions/&lt;/code&gt;, or you can use the legacy &lt;code&gt;.github/copilot-instructions.md&lt;/code&gt; at the repo root.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;YAML front matter:&lt;/strong&gt; Optionally include a YAML header with metadata like &lt;code&gt;applyTo:&lt;/code&gt;. The &lt;code&gt;applyTo&lt;/code&gt; property takes glob patterns to control when the instructions apply. For instance, &lt;code&gt;applyTo: &amp;quot;**/*.cs&amp;quot;&lt;/code&gt; makes the instructions automatically apply only to C# files.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Content:&lt;/strong&gt; Below the header, write your guidelines in plain English using Markdown (lists, paragraphs, code blocks, etc.).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;applyTo: &amp;#34;**/*.cs&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Always use the XUnit framework for C# unit tests.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Write test methods with &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; attributes.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Use &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt; for value assertions and include edge cases.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;prompt-files-defining-reusable-chat-prompts&#34;&gt;Prompt Files: Defining Reusable Chat Prompts&lt;/h2&gt;
-&lt;p&gt;A &lt;strong&gt;prompt file&lt;/strong&gt; (&lt;code&gt;.prompt.md&lt;/code&gt;) is a Markdown template for a Copilot Chat query. It can include static instructions, example context, and even reference code files. Prompt files let you save common tasks (like “generate tests for a file”) so you can reuse them easily.&lt;/p&gt;
-&lt;h3 id=&#34;prompt-file-structure&#34;&gt;Prompt File Structure&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mode: &amp;#39;ask&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;description: &amp;#39;Generate XUnit tests for a given C# file.&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Write comprehensive XUnit unit tests for the C# file &lt;span style=&#34;color:#e6db74&#34;&gt;`${input:filename}`&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Cover typical cases and edge cases. Use &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; attributes and &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt; for value assertions.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;how-to-use-prompt-files-in-vs-code&#34;&gt;How to Use Prompt Files in VS Code&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;Enable prompt files: in &lt;code&gt;settings.json&lt;/code&gt;, add&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;chat.promptFiles&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;Place your prompt files under &lt;code&gt;.github/prompts/&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Run via Copilot Chat using:&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;/Generate Unit Tests: filename&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;MyClass.cs
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;setting-up-instructions-and-prompts&#34;&gt;Setting Up Instructions and Prompts&lt;/h2&gt;
-&lt;h3 id=&#34;instruction-file-example&#34;&gt;Instruction File Example&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;.github/instructions/test-guidelines.instructions.md&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;applyTo: &amp;#34;**/*.cs&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Always use the XUnit framework for C# unit tests.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Use &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; for test methods.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Use &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt; and test edge cases.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;prompt-file-example&#34;&gt;Prompt File Example&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;.github/prompts/generate-tests.prompt.md&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mode: &amp;#39;ask&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;description: &amp;#39;Generate XUnit tests for a C# file.&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Write comprehensive XUnit unit tests for the C# file &lt;span style=&#34;color:#e6db74&#34;&gt;`${input:filename}`&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Cover typical cases and edge cases. Use &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; and &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;demo-xunit-tests-for-fibonacci-generator&#34;&gt;Demo: XUnit Tests for Fibonacci Generator&lt;/h2&gt;
-&lt;h3 id=&#34;c-implementation&#34;&gt;C# Implementation&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;FibonacciGenerator&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] Generate(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; n) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (n &amp;lt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArgumentException(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;n must be non-negative&amp;#34;&lt;/span&gt;, nameof(n));
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (n == &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Array.Empty&amp;lt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&amp;gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] result = &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[n];
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        result[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (n &amp;gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            result[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] = &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; i = &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;; i &amp;lt; n; i++) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                result[i] = result[i-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] + result[i-&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;];
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; result;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;generated-unit-tests&#34;&gt;Generated Unit Tests&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;FibonacciGeneratorTests&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;    [Fact]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Generate_ReturnsSequence_ForPositiveInput() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] result = FibonacciGenerator.Generate(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Assert.Equal(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] { &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; }, result);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;    [Fact]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Generate_ReturnsEmpty_ForZero() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] result = FibonacciGenerator.Generate(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Assert.Empty(result);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;    [Fact]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Generate_ThrowsArgumentException_ForNegative() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Assert.Throws&amp;lt;ArgumentException&amp;gt;(() =&amp;gt; FibonacciGenerator.Generate(-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;));
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;how-prompts-and-instructions-work-together&#34;&gt;How Prompts and Instructions Work Together&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Instructions&lt;/strong&gt; define global behavior per file type (e.g., C# = use XUnit).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Prompts&lt;/strong&gt; define the task (e.g., &amp;ldquo;write tests for this file&amp;rdquo;).&lt;/li&gt;
-&lt;li&gt;VS Code combines both into the chat context automatically.&lt;/li&gt;
-&lt;li&gt;Variables like &lt;code&gt;${input:filename}&lt;/code&gt; and file references like &lt;code&gt;#file:&lt;/code&gt; give dynamic, contextual behavior.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;By using custom instructions and prompts together, GitHub Copilot becomes a powerful tool tailored to your development workflow. Define coding standards once with instructions, and reuse smart, parameterized task flows via prompts. In our .NET example, this enabled automated test generation for any class in a consistent and idiomatic way.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;References:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://code.visualstudio.com/docs/copilot/copilot-customization&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;VS Code Copilot Customization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;GitHub Docs: Adding Repository Custom Instructions&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        
-    </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Custom Prompts on Arthurs Blogs</title><link>https://blogs.homeport-hub.nl/tags/custom-prompts/</link><description>Recent content in Custom Prompts on Arthurs Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Jul 2025 22:10:00 +0200</lastBuildDate><atom:link href="https://blogs.homeport-hub.nl/tags/custom-prompts/index.xml" rel="self" type="application/rss+xml"/><item><title>Customizing GitHub Copilot with Custom Instructions and Prompt Files</title><link>https://blogs.homeport-hub.nl/post/github-copilot-custom-prompts/copilot_custom_prompts/</link><pubDate>Sun, 13 Jul 2025 22:10:00 +0200</pubDate><guid>https://blogs.homeport-hub.nl/post/github-copilot-custom-prompts/copilot_custom_prompts/</guid><description>&lt;h1 id="customizing-github-copilot-with-custom-instructions-and-prompt-files">Customizing GitHub Copilot with Custom Instructions and Prompt Files&lt;/h1>
+&lt;p>GitHub Copilot Chat can be tailored to your project’s needs using &lt;strong>custom instructions&lt;/strong> and &lt;strong>prompt files&lt;/strong>. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a &lt;code>.prompt.md&lt;/code> suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.&lt;/p>
+&lt;h2 id="custom-instructions-what-and-how">Custom Instructions: What and How&lt;/h2>
+&lt;p>&lt;strong>Custom instructions&lt;/strong> are Markdown files (e.g. &lt;code>.github/copilot-instructions.md&lt;/code> or &lt;code>*.instructions.md&lt;/code>) that describe your coding practices, project requirements, or task-specific rules. For example, you might tell Copilot to “use XUnit for C# tests” or “format JSON with 2-space indentation”. When you open a Copilot Chat, VS Code automatically includes all instruction files whose patterns match the current context (e.g. file type or folder). This means you don’t have to repeat the same guidelines in every prompt – Copilot “remembers” them from your instruction files.&lt;/p>
+&lt;p>To configure custom instructions:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>File format &amp;amp; location:&lt;/strong> Create a Markdown file with a &lt;code>.instructions.md&lt;/code> suffix. By default, workspace instructions go under &lt;code>.github/instructions/&lt;/code>, or you can use the legacy &lt;code>.github/copilot-instructions.md&lt;/code> at the repo root.&lt;/li>
+&lt;li>&lt;strong>YAML front matter:&lt;/strong> Optionally include a YAML header with metadata like &lt;code>applyTo:&lt;/code>. The &lt;code>applyTo&lt;/code> property takes glob patterns to control when the instructions apply. For instance, &lt;code>applyTo: &amp;quot;**/*.cs&amp;quot;&lt;/code> makes the instructions automatically apply only to C# files.&lt;/li>
+&lt;li>&lt;strong>Content:&lt;/strong> Below the header, write your guidelines in plain English using Markdown (lists, paragraphs, code blocks, etc.).&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.cs&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always use the XUnit framework for C# unit tests.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Write test methods with &lt;span style="color:#e6db74">`[Fact]`&lt;/span> attributes.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span> for value assertions and include edge cases.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="prompt-files-defining-reusable-chat-prompts">Prompt Files: Defining Reusable Chat Prompts&lt;/h2>
+&lt;p>A &lt;strong>prompt file&lt;/strong> (&lt;code>.prompt.md&lt;/code>) is a Markdown template for a Copilot Chat query. It can include static instructions, example context, and even reference code files. Prompt files let you save common tasks (like “generate tests for a file”) so you can reuse them easily.&lt;/p>
+&lt;h3 id="prompt-file-structure">Prompt File Structure&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mode: &amp;#39;agent&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>description: &amp;#39;Generate XUnit tests for a given C# file.&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tools: [&amp;#39;codebase&amp;#39;, &amp;#39;editFiles&amp;#39;, &amp;#39;runCommands&amp;#39;, &amp;#39;testFailure&amp;#39;, &amp;#39;search&amp;#39;, &amp;#39;usages&amp;#39;, &amp;#39;findTestFiles&amp;#39;]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Write comprehensive XUnit unit tests for the C# file &lt;span style="color:#e6db74">`${input:filename}`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Cover typical cases and edge cases. Use &lt;span style="color:#e6db74">`[Fact]`&lt;/span> attributes and &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span> for value assertions.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use available tools to retrieve file content and verify its structure before test generation.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="why-use-mode-agent-and-tools">Why Use Mode: &amp;lsquo;agent&amp;rsquo; and Tools?&lt;/h3>
+&lt;p>Setting &lt;code>mode: 'agent'&lt;/code> enables Copilot to act autonomously using the provided tools. This allows it to:&lt;/p>
+&lt;ul>
+&lt;li>Search and open the correct file using &lt;code>search&lt;/code> and &lt;code>codebase&lt;/code>&lt;/li>
+&lt;li>Inspect file content contextually before writing tests&lt;/li>
+&lt;li>Create or update test files using &lt;code>editFiles&lt;/code>&lt;/li>
+&lt;li>Use &lt;code>runCommands&lt;/code> or &lt;code>testFailure&lt;/code> to understand failing test cases (optional)&lt;/li>
+&lt;li>Navigate test structure via &lt;code>findTestFiles&lt;/code> and &lt;code>usages&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>This setup transforms the prompt from a static question into a smart agent-based workflow that can operate across your codebase.&lt;/p>
+&lt;h3 id="how-to-use-prompt-files-in-vs-code">How to Use Prompt Files in VS Code&lt;/h3>
+&lt;ol>
+&lt;li>Enable prompt files: in &lt;code>settings.json&lt;/code>, add&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;chat.promptFiles&amp;#34;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>Place your prompt files under &lt;code>.github/prompts/&lt;/code>.&lt;/li>
+&lt;li>Run via Copilot Chat using:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/Generate Unit Tests: filename&lt;span style="color:#f92672">=&lt;/span>MyClass.cs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="setting-up-instructions-and-prompts">Setting Up Instructions and Prompts&lt;/h2>
+&lt;h3 id="instruction-file-example">Instruction File Example&lt;/h3>
+&lt;p>&lt;code>.github/instructions/test-guidelines.instructions.md&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.cs&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always use the XUnit framework for C# unit tests.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`[Fact]`&lt;/span> for test methods.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span> and test edge cases.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="prompt-file-example">Prompt File Example&lt;/h3>
+&lt;p>&lt;code>.github/prompts/generate-tests.prompt.md&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mode: &amp;#39;agent&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>description: &amp;#39;Generate XUnit tests for a C# file.&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tools: [&amp;#39;codebase&amp;#39;, &amp;#39;editFiles&amp;#39;, &amp;#39;runCommands&amp;#39;, &amp;#39;testFailure&amp;#39;, &amp;#39;search&amp;#39;, &amp;#39;usages&amp;#39;, &amp;#39;findTestFiles&amp;#39;]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Write comprehensive XUnit unit tests for the C# file &lt;span style="color:#e6db74">`${input:filename}`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Cover typical cases and edge cases. Use &lt;span style="color:#e6db74">`[Fact]`&lt;/span> and &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use available tools to read file content and test structure.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="demo-xunit-tests-for-fibonacci-generator">Demo: XUnit Tests for Fibonacci Generator&lt;/h2>
+&lt;h3 id="c-implementation">C# Implementation&lt;/h3>
+&lt;p>Imagine you&amp;rsquo;re working on a .NET backend project where performance and correctness of core algorithmic components are critical. One such component is a utility class responsible for generating Fibonacci sequences, used across several services for simulation or computation purposes.&lt;/p>
+&lt;p>You&amp;rsquo;ve written the initial implementation, but you want to ensure it&amp;rsquo;s well-tested before integrating it into the main pipeline. Rather than manually writing all unit tests, you use your configured Copilot agent prompt to automate the process—saving time while ensuring consistency and coverage.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-csharp" data-lang="csharp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">FibonacciGenerator&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>[] Generate(&lt;span style="color:#66d9ef">int&lt;/span> n) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n &amp;lt; &lt;span style="color:#ae81ff">0&lt;/span>) &lt;span style="color:#66d9ef">throw&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ArgumentException(&lt;span style="color:#e6db74">&amp;#34;n must be non-negative&amp;#34;&lt;/span>, nameof(n));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n == &lt;span style="color:#ae81ff">0&lt;/span>) &lt;span style="color:#66d9ef">return&lt;/span> Array.Empty&amp;lt;&lt;span style="color:#66d9ef">int&lt;/span>&amp;gt;();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>[] result = &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>[n];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result[&lt;span style="color:#ae81ff">0&lt;/span>] = &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n &amp;gt; &lt;span style="color:#ae81ff">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result[&lt;span style="color:#ae81ff">1&lt;/span>] = &lt;span style="color:#ae81ff">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i = &lt;span style="color:#ae81ff">2&lt;/span>; i &amp;lt; n; i++) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result[i] = result[i-&lt;span style="color:#ae81ff">1&lt;/span>] + result[i-&lt;span style="color:#ae81ff">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="running-the-custom-prompt">Running the Custom Prompt&lt;/h3>
+&lt;p>You can now invoke the prompt with:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/Generate Unit Tests: filename&lt;span style="color:#f92672">=&lt;/span>FibonacciGenerator.cs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Copilot will use &lt;code>search&lt;/code>, &lt;code>codebase&lt;/code>, and &lt;code>editFiles&lt;/code> to:&lt;/p>
+&lt;ul>
+&lt;li>Locate the source file by name&lt;/li>
+&lt;li>Read its content and logic&lt;/li>
+&lt;li>Determine expected inputs and edge cases&lt;/li>
+&lt;li>Create or update a corresponding XUnit test file in the correct test folder&lt;/li>
+&lt;/ul>
+&lt;h3 id="generated-unit-tests">Generated Unit Tests&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-csharp" data-lang="csharp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">FibonacciGeneratorTests&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e"> [Fact]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> Generate_ReturnsSequence_ForPositiveInput() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>[] result = FibonacciGenerator.Generate(&lt;span style="color:#ae81ff">5&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Assert.Equal(&lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>[] { &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span> }, result);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e"> [Fact]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> Generate_ReturnsEmpty_ForZero() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>[] result = FibonacciGenerator.Generate(&lt;span style="color:#ae81ff">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Assert.Empty(result);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e"> [Fact]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> Generate_ThrowsArgumentException_ForNegative() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Assert.Throws&amp;lt;ArgumentException&amp;gt;(() =&amp;gt; FibonacciGenerator.Generate(-&lt;span style="color:#ae81ff">1&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>These tests match your coding standards (defined in instructions), and are context-aware thanks to the agent prompt.&lt;/p>
+&lt;h2 id="how-prompts-and-instructions-work-together">How Prompts and Instructions Work Together&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Instructions&lt;/strong> define global behavior per file type (e.g., C# = use XUnit)&lt;/li>
+&lt;li>&lt;strong>Prompts&lt;/strong> define the specific task (e.g., &amp;ldquo;write tests for this file&amp;rdquo;) and can invoke tools in agent mode&lt;/li>
+&lt;li>VS Code combines both into the chat context automatically&lt;/li>
+&lt;li>Variables like &lt;code>${input:filename}&lt;/code> and file references like &lt;code>#file:&lt;/code> give dynamic, contextual behavior&lt;/li>
+&lt;/ul>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>By using custom instructions and prompts together, GitHub Copilot becomes a powerful tool tailored to your development workflow. Define coding standards once with instructions, and reuse smart, parameterized task flows via prompts. Agent-based prompts and tool access allow Copilot to generate, verify, and manage files intelligently. In our .NET example, this enabled automated, consistent, and idiomatic test generation for any class.&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>References:&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://code.visualstudio.com/docs/copilot/copilot-customization" target="_blank" rel="noopener"
+>VS Code Copilot Customization&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot" target="_blank" rel="noopener"
+>GitHub Docs: Adding Repository Custom Instructions&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

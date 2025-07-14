@@ -1,105 +1,83 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Typescript on Arthurs Blogs</title>
-        <link>http://localhost:1313/tags/typescript/</link>
-        <description>Recent content in Typescript on Arthurs Blogs</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Thu, 20 Apr 2023 22:10:00 +0200</lastBuildDate><atom:link href="http://localhost:1313/tags/typescript/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Angular structural Directive for authorized content</title>
-        <link>http://localhost:1313/post/authorization-directive/authorization-directive/</link>
-        <pubDate>Thu, 20 Apr 2023 22:10:00 +0200</pubDate>
-        
-        <guid>http://localhost:1313/post/authorization-directive/authorization-directive/</guid>
-        <description>&lt;h1 id=&#34;authorization-directive-in-angular-with-msal-angular&#34;&gt;Authorization directive in Angular with Msal-Angular&lt;/h1&gt;
-&lt;p&gt;In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&amp;rsquo;s authentication status using an authorized directive.&lt;/p&gt;
-&lt;p&gt;When I was working on a Blazor project, I used an &lt;a class=&#34;link&#34; href=&#34;https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-7.0#authorizeview-component&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;AuthorizedView component&lt;/a&gt;, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.&lt;/p&gt;
-&lt;p&gt;For the purpose of this blog, we will be using the following context:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Angular 14 web app&lt;/li&gt;
-&lt;li&gt;MSAL Library for authentication (@azure/msal-browser &amp;amp; @azure/msal-angular)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The idea is to create a directive that injects the MSAL services, and based on the user&amp;rsquo;s authentication status, dynamically creates or clears the embedded view.&lt;/p&gt;
-&lt;h2 id=&#34;blazor-authorizationview&#34;&gt;Blazor AuthorizationView&lt;/h2&gt;
-&lt;p&gt;What is an AuthorizeView component?&lt;/p&gt;
-&lt;p&gt;An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don&amp;rsquo;t need to use the user&amp;rsquo;s identity in procedural logic.&lt;/p&gt;
-&lt;script src=&#34;https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;This is the default example from the microsoft website for using the AuthorizedView component. The content of &lt;code&gt;&amp;lt;Authorized&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;NotAuthorized&amp;gt;&lt;/code&gt; tags can include arbitrary items, such as other interactive components.&lt;/p&gt;
-&lt;p&gt;If authorization conditions aren&amp;rsquo;t specified, AuthorizeView uses a default policy:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Authenticated (signed-in) users are authorized.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Typescript on Arthurs Blogs</title><link>https://blogs.homeport-hub.nl/tags/typescript/</link><description>Recent content in Typescript on Arthurs Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Apr 2023 22:10:00 +0200</lastBuildDate><atom:link href="https://blogs.homeport-hub.nl/tags/typescript/index.xml" rel="self" type="application/rss+xml"/><item><title>Angular structural Directive for authorized content</title><link>https://blogs.homeport-hub.nl/post/authorization-directive/authorization-directive/</link><pubDate>Thu, 20 Apr 2023 22:10:00 +0200</pubDate><guid>https://blogs.homeport-hub.nl/post/authorization-directive/authorization-directive/</guid><description>&lt;h1 id="authorization-directive-in-angular-with-msal-angular">Authorization directive in Angular with Msal-Angular&lt;/h1>
+&lt;p>In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&amp;rsquo;s authentication status using an authorized directive.&lt;/p>
+&lt;p>When I was working on a Blazor project, I used an &lt;a class="link" href="https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-7.0#authorizeview-component" target="_blank" rel="noopener"
+>AuthorizedView component&lt;/a>, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.&lt;/p>
+&lt;p>For the purpose of this blog, we will be using the following context:&lt;/p>
+&lt;ul>
+&lt;li>Angular 14 web app&lt;/li>
+&lt;li>MSAL Library for authentication (@azure/msal-browser &amp;amp; @azure/msal-angular)&lt;/li>
+&lt;/ul>
+&lt;p>The idea is to create a directive that injects the MSAL services, and based on the user&amp;rsquo;s authentication status, dynamically creates or clears the embedded view.&lt;/p>
+&lt;h2 id="blazor-authorizationview">Blazor AuthorizationView&lt;/h2>
+&lt;p>What is an AuthorizeView component?&lt;/p>
+&lt;p>An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don&amp;rsquo;t need to use the user&amp;rsquo;s identity in procedural logic.&lt;/p>
+&lt;script src="https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs">&lt;/script>
+&lt;p>This is the default example from the microsoft website for using the AuthorizedView component. The content of &lt;code>&amp;lt;Authorized&amp;gt;&lt;/code> and &lt;code>&amp;lt;NotAuthorized&amp;gt;&lt;/code> tags can include arbitrary items, such as other interactive components.&lt;/p>
+&lt;p>If authorization conditions aren&amp;rsquo;t specified, AuthorizeView uses a default policy:&lt;/p>
+&lt;pre>&lt;code>Authenticated (signed-in) users are authorized.
 Unauthenticated (signed-out) users are unauthorized.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;What is an AuthorizeView component?
-An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don’t need to use the user’s identity in procedural logic.&lt;/p&gt;
-&lt;script src=&#34;https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;This is the default example from the Microsoft website for using the AuthorizeView component. The content of &lt;!-- raw HTML omitted --&gt; and &lt;!-- raw HTML omitted --&gt; tags can include arbitrary items, such as other interactive components.&lt;/p&gt;
-&lt;p&gt;If authorization conditions aren’t specified, AuthorizeView uses a default policy:&lt;/p&gt;
-&lt;p&gt;Authenticated (signed-in) users are authorized.
-Unauthenticated (signed-out) users are unauthorized.&lt;/p&gt;
-&lt;h2 id=&#34;structural-directive&#34;&gt;Structural directive&lt;/h2&gt;
-&lt;p&gt;For creating the authorized directive we use an &lt;a class=&#34;link&#34; href=&#34;https://angular.io/guide/structural-directives&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;structural directive&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Structural directives are directives which change the DOM layout by adding and removing DOM elements.&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;Angular provides a set of built-in structural directives, such as NgIf, NgForOf, NgSwitch, and others, which are commonly used in all Angular projects.&lt;/p&gt;
-&lt;p&gt;This is exactly what we need for adding or removing DOM elements based on the user&amp;rsquo;s authentication status. So, let&amp;rsquo;s create a structural directive that injects the MSAL services and dynamically adds or removes the element based on the user&amp;rsquo;s authentication status.&lt;/p&gt;
-&lt;h2 id=&#34;authorized-directive&#34;&gt;*authorized directive&lt;/h2&gt;
-&lt;p&gt;So lets create the authorized structural directive. First we start with injecting the services in the constructor.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;constructor&lt;/span&gt;(
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;templateRef&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;TemplateRef&lt;/span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;any&lt;/span&gt;&amp;gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;viewContainer&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;ViewContainerRef&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;authService&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;MsalService&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastService&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;MsalBroadcastService&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;templateref--viewcontainer&#34;&gt;templateRef &amp;amp; ViewContainer&lt;/h4&gt;
-&lt;p&gt;TemplateRef helps you get to the &lt;!-- raw HTML omitted --&gt; contents and ViewContainerRef accesses the view container&lt;/p&gt;
-&lt;h4 id=&#34;authservice--broadcastservices&#34;&gt;authService $ broadcastServices&lt;/h4&gt;
-&lt;p&gt;These services are provided by the Msal library and can be used to determine if a user is authorized (authService) and listen to authorization-related events (broadcastService).&lt;/p&gt;
-&lt;p&gt;In the ngOnInit function, we subscribe to the InteractionStatus &amp;ldquo;None&amp;rdquo; event. This event is fired when an interaction is complete. We subscribe to this event so that when this event is fired, we can determine if the element should be added or removed from the DOM.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ngOnInit&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastSubscription&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastService&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;inProgress$&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;pipe&lt;/span&gt;(
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;((&lt;span style=&#34;color:#a6e22e&#34;&gt;eventType&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;InteractionStatus&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;eventType&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InteractionStatus&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;None&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;takeUntil&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ).&lt;span style=&#34;color:#a6e22e&#34;&gt;subscribe&lt;/span&gt;(() &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;setDisplay&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    });
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As you can see, we use the rxjs takeUntil operator for cleaning up the subscription. The takeUntil operator emits the values emitted by the source Observable until a notifier Observable emits a value.&lt;/p&gt;
-&lt;p&gt;To make this work, we need to declare two private properties.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;readonly&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subject&lt;/span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;void&lt;/span&gt;&amp;gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastSubscription&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;!:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subscription&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;_destroying$:&lt;/strong&gt; observable for notifying the takeUntil&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;broadcastSubscription:&lt;/strong&gt; Subscription we need to clean up when the element is destroyed
-Now it&amp;rsquo;s time to add the function which contains the logic for adding or removing the element based on the authentication status.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setDisplay&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;account&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;authService&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;instance&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;getActiveAccount&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;account&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;viewContainer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;createEmbeddedView&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;templateRef&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;account&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;viewContainer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;clear&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;First, we get the active account from the authService. If an active account is returned, we know that the user is authenticated. Also, we check if the element is already added. If not, then we can create the element in the container and update the hasView value. When the user isn&amp;rsquo;t authenticated and the template was created in the container, we need to clear the container.&lt;/p&gt;
-&lt;p&gt;To clean up the mess we made, we use the ngOnDestroy to clean up the subscriptions when the component is destroyed.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ngOnDestroy&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;next&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;undefined&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;complete&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastSubscription&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;unsubscribe&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we have a structural directive that we can place on elements which should be added or removed based on the user&amp;rsquo;s authentication status. If we put it all together, we get the following directive:&lt;/p&gt;
-&lt;script src=&#34;https://gist.github.com/arthurvandijk/863e16cb0ec531e2385ddd1cb48d6492.js?file=authorized.directive.ts&#34;&gt;&lt;/script&gt;
-
-</description>
-        </item>
-        
-    </channel>
-</rss>
+&lt;/code>&lt;/pre>
+&lt;p>What is an AuthorizeView component?
+An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don’t need to use the user’s identity in procedural logic.&lt;/p>
+&lt;script src="https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs">&lt;/script>
+&lt;p>This is the default example from the Microsoft website for using the AuthorizeView component. The content of &lt;!-- raw HTML omitted --> and &lt;!-- raw HTML omitted --> tags can include arbitrary items, such as other interactive components.&lt;/p>
+&lt;p>If authorization conditions aren’t specified, AuthorizeView uses a default policy:&lt;/p>
+&lt;p>Authenticated (signed-in) users are authorized.
+Unauthenticated (signed-out) users are unauthorized.&lt;/p>
+&lt;h2 id="structural-directive">Structural directive&lt;/h2>
+&lt;p>For creating the authorized directive we use an &lt;a class="link" href="https://angular.io/guide/structural-directives" target="_blank" rel="noopener"
+>structural directive&lt;/a>.&lt;/p>
+&lt;blockquote>
+&lt;p>Structural directives are directives which change the DOM layout by adding and removing DOM elements.&lt;/p>&lt;/blockquote>
+&lt;p>Angular provides a set of built-in structural directives, such as NgIf, NgForOf, NgSwitch, and others, which are commonly used in all Angular projects.&lt;/p>
+&lt;p>This is exactly what we need for adding or removing DOM elements based on the user&amp;rsquo;s authentication status. So, let&amp;rsquo;s create a structural directive that injects the MSAL services and dynamically adds or removes the element based on the user&amp;rsquo;s authentication status.&lt;/p>
+&lt;h2 id="authorized-directive">*authorized directive&lt;/h2>
+&lt;p>So lets create the authorized structural directive. First we start with injecting the services in the constructor.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">constructor&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">templateRef&lt;/span>: &lt;span style="color:#66d9ef">TemplateRef&lt;/span>&amp;lt;&lt;span style="color:#f92672">any&lt;/span>&amp;gt;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">viewContainer&lt;/span>: &lt;span style="color:#66d9ef">ViewContainerRef&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">authService&lt;/span>: &lt;span style="color:#66d9ef">MsalService&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">broadcastService&lt;/span>: &lt;span style="color:#66d9ef">MsalBroadcastService&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="templateref--viewcontainer">templateRef &amp;amp; ViewContainer&lt;/h4>
+&lt;p>TemplateRef helps you get to the &lt;!-- raw HTML omitted --> contents and ViewContainerRef accesses the view container&lt;/p>
+&lt;h4 id="authservice--broadcastservices">authService $ broadcastServices&lt;/h4>
+&lt;p>These services are provided by the Msal library and can be used to determine if a user is authorized (authService) and listen to authorization-related events (broadcastService).&lt;/p>
+&lt;p>In the ngOnInit function, we subscribe to the InteractionStatus &amp;ldquo;None&amp;rdquo; event. This event is fired when an interaction is complete. We subscribe to this event so that when this event is fired, we can determine if the element should be added or removed from the DOM.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">ngOnInit&lt;/span>()&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">broadcastSubscription&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">broadcastService&lt;/span>.&lt;span style="color:#a6e22e">inProgress$&lt;/span>.&lt;span style="color:#a6e22e">pipe&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">filter&lt;/span>((&lt;span style="color:#a6e22e">eventType&lt;/span>: &lt;span style="color:#66d9ef">InteractionStatus&lt;/span>) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">eventType&lt;/span> &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#a6e22e">InteractionStatus&lt;/span>.&lt;span style="color:#a6e22e">None&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">takeUntil&lt;/span>(&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">_destroying$&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ).&lt;span style="color:#a6e22e">subscribe&lt;/span>(() &lt;span style="color:#f92672">=&amp;gt;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">setDisplay&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>As you can see, we use the rxjs takeUntil operator for cleaning up the subscription. The takeUntil operator emits the values emitted by the source Observable until a notifier Observable emits a value.&lt;/p>
+&lt;p>To make this work, we need to declare two private properties.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">readonly&lt;/span> &lt;span style="color:#a6e22e">_destroying$&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Subject&lt;/span>&amp;lt;&lt;span style="color:#f92672">void&lt;/span>&amp;gt;();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">broadcastSubscription&lt;/span>&lt;span style="color:#f92672">!:&lt;/span> &lt;span style="color:#a6e22e">Subscription&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;strong>_destroying$:&lt;/strong> observable for notifying the takeUntil&lt;/li>
+&lt;li>&lt;strong>broadcastSubscription:&lt;/strong> Subscription we need to clean up when the element is destroyed
+Now it&amp;rsquo;s time to add the function which contains the logic for adding or removing the element based on the authentication status.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">setDisplay&lt;/span>()&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">account&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">authService&lt;/span>.&lt;span style="color:#a6e22e">instance&lt;/span>.&lt;span style="color:#a6e22e">getActiveAccount&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#a6e22e">account&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">viewContainer&lt;/span>.&lt;span style="color:#a6e22e">createEmbeddedView&lt;/span>(&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">templateRef&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#a6e22e">account&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">viewContainer&lt;/span>.&lt;span style="color:#a6e22e">clear&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>First, we get the active account from the authService. If an active account is returned, we know that the user is authenticated. Also, we check if the element is already added. If not, then we can create the element in the container and update the hasView value. When the user isn&amp;rsquo;t authenticated and the template was created in the container, we need to clear the container.&lt;/p>
+&lt;p>To clean up the mess we made, we use the ngOnDestroy to clean up the subscriptions when the component is destroyed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">ngOnDestroy&lt;/span>()&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">_destroying$&lt;/span>.&lt;span style="color:#a6e22e">next&lt;/span>(&lt;span style="color:#66d9ef">undefined&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">_destroying$&lt;/span>.&lt;span style="color:#a6e22e">complete&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">broadcastSubscription&lt;/span>.&lt;span style="color:#a6e22e">unsubscribe&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now we have a structural directive that we can place on elements which should be added or removed based on the user&amp;rsquo;s authentication status. If we put it all together, we get the following directive:&lt;/p>
+&lt;script src="https://gist.github.com/arthurvandijk/863e16cb0ec531e2385ddd1cb48d6492.js?file=authorized.directive.ts">&lt;/script></description></item></channel></rss>

@@ -1,218 +1,288 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Posts on Arthurs Blogs</title>
-        <link>http://localhost:1313/post/</link>
-        <description>Recent content in Posts on Arthurs Blogs</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Thu, 20 Apr 2023 22:10:00 +0200</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Angular structural Directive for authorized content</title>
-        <link>http://localhost:1313/post/authorization-directive/authorization-directive/</link>
-        <pubDate>Thu, 20 Apr 2023 22:10:00 +0200</pubDate>
-        
-        <guid>http://localhost:1313/post/authorization-directive/authorization-directive/</guid>
-        <description>&lt;h1 id=&#34;authorization-directive-in-angular-with-msal-angular&#34;&gt;Authorization directive in Angular with Msal-Angular&lt;/h1&gt;
-&lt;p&gt;In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&amp;rsquo;s authentication status using an authorized directive.&lt;/p&gt;
-&lt;p&gt;When I was working on a Blazor project, I used an &lt;a class=&#34;link&#34; href=&#34;https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-7.0#authorizeview-component&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;AuthorizedView component&lt;/a&gt;, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.&lt;/p&gt;
-&lt;p&gt;For the purpose of this blog, we will be using the following context:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Angular 14 web app&lt;/li&gt;
-&lt;li&gt;MSAL Library for authentication (@azure/msal-browser &amp;amp; @azure/msal-angular)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The idea is to create a directive that injects the MSAL services, and based on the user&amp;rsquo;s authentication status, dynamically creates or clears the embedded view.&lt;/p&gt;
-&lt;h2 id=&#34;blazor-authorizationview&#34;&gt;Blazor AuthorizationView&lt;/h2&gt;
-&lt;p&gt;What is an AuthorizeView component?&lt;/p&gt;
-&lt;p&gt;An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don&amp;rsquo;t need to use the user&amp;rsquo;s identity in procedural logic.&lt;/p&gt;
-&lt;script src=&#34;https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;This is the default example from the microsoft website for using the AuthorizedView component. The content of &lt;code&gt;&amp;lt;Authorized&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;NotAuthorized&amp;gt;&lt;/code&gt; tags can include arbitrary items, such as other interactive components.&lt;/p&gt;
-&lt;p&gt;If authorization conditions aren&amp;rsquo;t specified, AuthorizeView uses a default policy:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Authenticated (signed-in) users are authorized.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Arthurs Blogs</title><link>https://blogs.homeport-hub.nl/post/</link><description>Recent content in Posts on Arthurs Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Jul 2025 22:10:00 +0200</lastBuildDate><atom:link href="https://blogs.homeport-hub.nl/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Customizing GitHub Copilot with Custom Instructions and Prompt Files</title><link>https://blogs.homeport-hub.nl/post/github-copilot-custom-prompts/copilot_custom_prompts/</link><pubDate>Sun, 13 Jul 2025 22:10:00 +0200</pubDate><guid>https://blogs.homeport-hub.nl/post/github-copilot-custom-prompts/copilot_custom_prompts/</guid><description>&lt;h1 id="customizing-github-copilot-with-custom-instructions-and-prompt-files">Customizing GitHub Copilot with Custom Instructions and Prompt Files&lt;/h1>
+&lt;p>GitHub Copilot Chat can be tailored to your project’s needs using &lt;strong>custom instructions&lt;/strong> and &lt;strong>prompt files&lt;/strong>. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a &lt;code>.prompt.md&lt;/code> suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.&lt;/p>
+&lt;h2 id="custom-instructions-what-and-how">Custom Instructions: What and How&lt;/h2>
+&lt;p>&lt;strong>Custom instructions&lt;/strong> are Markdown files (e.g. &lt;code>.github/copilot-instructions.md&lt;/code> or &lt;code>*.instructions.md&lt;/code>) that describe your coding practices, project requirements, or task-specific rules. For example, you might tell Copilot to “use XUnit for C# tests” or “format JSON with 2-space indentation”. When you open a Copilot Chat, VS Code automatically includes all instruction files whose patterns match the current context (e.g. file type or folder). This means you don’t have to repeat the same guidelines in every prompt – Copilot “remembers” them from your instruction files.&lt;/p>
+&lt;p>To configure custom instructions:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>File format &amp;amp; location:&lt;/strong> Create a Markdown file with a &lt;code>.instructions.md&lt;/code> suffix. By default, workspace instructions go under &lt;code>.github/instructions/&lt;/code>, or you can use the legacy &lt;code>.github/copilot-instructions.md&lt;/code> at the repo root.&lt;/li>
+&lt;li>&lt;strong>YAML front matter:&lt;/strong> Optionally include a YAML header with metadata like &lt;code>applyTo:&lt;/code>. The &lt;code>applyTo&lt;/code> property takes glob patterns to control when the instructions apply. For instance, &lt;code>applyTo: &amp;quot;**/*.cs&amp;quot;&lt;/code> makes the instructions automatically apply only to C# files.&lt;/li>
+&lt;li>&lt;strong>Content:&lt;/strong> Below the header, write your guidelines in plain English using Markdown (lists, paragraphs, code blocks, etc.).&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.cs&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always use the XUnit framework for C# unit tests.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Write test methods with &lt;span style="color:#e6db74">`[Fact]`&lt;/span> attributes.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span> for value assertions and include edge cases.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="prompt-files-defining-reusable-chat-prompts">Prompt Files: Defining Reusable Chat Prompts&lt;/h2>
+&lt;p>A &lt;strong>prompt file&lt;/strong> (&lt;code>.prompt.md&lt;/code>) is a Markdown template for a Copilot Chat query. It can include static instructions, example context, and even reference code files. Prompt files let you save common tasks (like “generate tests for a file”) so you can reuse them easily.&lt;/p>
+&lt;h3 id="prompt-file-structure">Prompt File Structure&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mode: &amp;#39;agent&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>description: &amp;#39;Generate XUnit tests for a given C# file.&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tools: [&amp;#39;codebase&amp;#39;, &amp;#39;editFiles&amp;#39;, &amp;#39;runCommands&amp;#39;, &amp;#39;testFailure&amp;#39;, &amp;#39;search&amp;#39;, &amp;#39;usages&amp;#39;, &amp;#39;findTestFiles&amp;#39;]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Write comprehensive XUnit unit tests for the C# file &lt;span style="color:#e6db74">`${input:filename}`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Cover typical cases and edge cases. Use &lt;span style="color:#e6db74">`[Fact]`&lt;/span> attributes and &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span> for value assertions.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use available tools to retrieve file content and verify its structure before test generation.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="why-use-mode-agent-and-tools">Why Use Mode: &amp;lsquo;agent&amp;rsquo; and Tools?&lt;/h3>
+&lt;p>Setting &lt;code>mode: 'agent'&lt;/code> enables Copilot to act autonomously using the provided tools. This allows it to:&lt;/p>
+&lt;ul>
+&lt;li>Search and open the correct file using &lt;code>search&lt;/code> and &lt;code>codebase&lt;/code>&lt;/li>
+&lt;li>Inspect file content contextually before writing tests&lt;/li>
+&lt;li>Create or update test files using &lt;code>editFiles&lt;/code>&lt;/li>
+&lt;li>Use &lt;code>runCommands&lt;/code> or &lt;code>testFailure&lt;/code> to understand failing test cases (optional)&lt;/li>
+&lt;li>Navigate test structure via &lt;code>findTestFiles&lt;/code> and &lt;code>usages&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>This setup transforms the prompt from a static question into a smart agent-based workflow that can operate across your codebase.&lt;/p>
+&lt;h3 id="how-to-use-prompt-files-in-vs-code">How to Use Prompt Files in VS Code&lt;/h3>
+&lt;ol>
+&lt;li>Enable prompt files: in &lt;code>settings.json&lt;/code>, add&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;chat.promptFiles&amp;#34;&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>Place your prompt files under &lt;code>.github/prompts/&lt;/code>.&lt;/li>
+&lt;li>Run via Copilot Chat using:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/Generate Unit Tests: filename&lt;span style="color:#f92672">=&lt;/span>MyClass.cs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="setting-up-instructions-and-prompts">Setting Up Instructions and Prompts&lt;/h2>
+&lt;h3 id="instruction-file-example">Instruction File Example&lt;/h3>
+&lt;p>&lt;code>.github/instructions/test-guidelines.instructions.md&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.cs&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always use the XUnit framework for C# unit tests.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`[Fact]`&lt;/span> for test methods.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span> and test edge cases.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="prompt-file-example">Prompt File Example&lt;/h3>
+&lt;p>&lt;code>.github/prompts/generate-tests.prompt.md&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mode: &amp;#39;agent&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>description: &amp;#39;Generate XUnit tests for a C# file.&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tools: [&amp;#39;codebase&amp;#39;, &amp;#39;editFiles&amp;#39;, &amp;#39;runCommands&amp;#39;, &amp;#39;testFailure&amp;#39;, &amp;#39;search&amp;#39;, &amp;#39;usages&amp;#39;, &amp;#39;findTestFiles&amp;#39;]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Write comprehensive XUnit unit tests for the C# file &lt;span style="color:#e6db74">`${input:filename}`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Cover typical cases and edge cases. Use &lt;span style="color:#e6db74">`[Fact]`&lt;/span> and &lt;span style="color:#e6db74">`Assert.Equal`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use available tools to read file content and test structure.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="demo-xunit-tests-for-fibonacci-generator">Demo: XUnit Tests for Fibonacci Generator&lt;/h2>
+&lt;h3 id="c-implementation">C# Implementation&lt;/h3>
+&lt;p>Imagine you&amp;rsquo;re working on a .NET backend project where performance and correctness of core algorithmic components are critical. One such component is a utility class responsible for generating Fibonacci sequences, used across several services for simulation or computation purposes.&lt;/p>
+&lt;p>You&amp;rsquo;ve written the initial implementation, but you want to ensure it&amp;rsquo;s well-tested before integrating it into the main pipeline. Rather than manually writing all unit tests, you use your configured Copilot agent prompt to automate the process—saving time while ensuring consistency and coverage.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-csharp" data-lang="csharp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">FibonacciGenerator&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>[] Generate(&lt;span style="color:#66d9ef">int&lt;/span> n) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n &amp;lt; &lt;span style="color:#ae81ff">0&lt;/span>) &lt;span style="color:#66d9ef">throw&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ArgumentException(&lt;span style="color:#e6db74">&amp;#34;n must be non-negative&amp;#34;&lt;/span>, nameof(n));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n == &lt;span style="color:#ae81ff">0&lt;/span>) &lt;span style="color:#66d9ef">return&lt;/span> Array.Empty&amp;lt;&lt;span style="color:#66d9ef">int&lt;/span>&amp;gt;();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>[] result = &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>[n];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result[&lt;span style="color:#ae81ff">0&lt;/span>] = &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n &amp;gt; &lt;span style="color:#ae81ff">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result[&lt;span style="color:#ae81ff">1&lt;/span>] = &lt;span style="color:#ae81ff">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i = &lt;span style="color:#ae81ff">2&lt;/span>; i &amp;lt; n; i++) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result[i] = result[i-&lt;span style="color:#ae81ff">1&lt;/span>] + result[i-&lt;span style="color:#ae81ff">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="running-the-custom-prompt">Running the Custom Prompt&lt;/h3>
+&lt;p>You can now invoke the prompt with:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>/Generate Unit Tests: filename&lt;span style="color:#f92672">=&lt;/span>FibonacciGenerator.cs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Copilot will use &lt;code>search&lt;/code>, &lt;code>codebase&lt;/code>, and &lt;code>editFiles&lt;/code> to:&lt;/p>
+&lt;ul>
+&lt;li>Locate the source file by name&lt;/li>
+&lt;li>Read its content and logic&lt;/li>
+&lt;li>Determine expected inputs and edge cases&lt;/li>
+&lt;li>Create or update a corresponding XUnit test file in the correct test folder&lt;/li>
+&lt;/ul>
+&lt;h3 id="generated-unit-tests">Generated Unit Tests&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-csharp" data-lang="csharp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">FibonacciGeneratorTests&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e"> [Fact]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> Generate_ReturnsSequence_ForPositiveInput() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>[] result = FibonacciGenerator.Generate(&lt;span style="color:#ae81ff">5&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Assert.Equal(&lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>[] { &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span> }, result);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e"> [Fact]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> Generate_ReturnsEmpty_ForZero() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>[] result = FibonacciGenerator.Generate(&lt;span style="color:#ae81ff">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Assert.Empty(result);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e"> [Fact]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> Generate_ThrowsArgumentException_ForNegative() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Assert.Throws&amp;lt;ArgumentException&amp;gt;(() =&amp;gt; FibonacciGenerator.Generate(-&lt;span style="color:#ae81ff">1&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>These tests match your coding standards (defined in instructions), and are context-aware thanks to the agent prompt.&lt;/p>
+&lt;h2 id="how-prompts-and-instructions-work-together">How Prompts and Instructions Work Together&lt;/h2>
+&lt;ul>
+&lt;li>&lt;strong>Instructions&lt;/strong> define global behavior per file type (e.g., C# = use XUnit)&lt;/li>
+&lt;li>&lt;strong>Prompts&lt;/strong> define the specific task (e.g., &amp;ldquo;write tests for this file&amp;rdquo;) and can invoke tools in agent mode&lt;/li>
+&lt;li>VS Code combines both into the chat context automatically&lt;/li>
+&lt;li>Variables like &lt;code>${input:filename}&lt;/code> and file references like &lt;code>#file:&lt;/code> give dynamic, contextual behavior&lt;/li>
+&lt;/ul>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>By using custom instructions and prompts together, GitHub Copilot becomes a powerful tool tailored to your development workflow. Define coding standards once with instructions, and reuse smart, parameterized task flows via prompts. Agent-based prompts and tool access allow Copilot to generate, verify, and manage files intelligently. In our .NET example, this enabled automated, consistent, and idiomatic test generation for any class.&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>References:&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://code.visualstudio.com/docs/copilot/copilot-customization" target="_blank" rel="noopener"
+>VS Code Copilot Customization&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot" target="_blank" rel="noopener"
+>GitHub Docs: Adding Repository Custom Instructions&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Angular structural Directive for authorized content</title><link>https://blogs.homeport-hub.nl/post/authorization-directive/authorization-directive/</link><pubDate>Thu, 20 Apr 2023 22:10:00 +0200</pubDate><guid>https://blogs.homeport-hub.nl/post/authorization-directive/authorization-directive/</guid><description>&lt;h1 id="authorization-directive-in-angular-with-msal-angular">Authorization directive in Angular with Msal-Angular&lt;/h1>
+&lt;p>In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&amp;rsquo;s authentication status using an authorized directive.&lt;/p>
+&lt;p>When I was working on a Blazor project, I used an &lt;a class="link" href="https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-7.0#authorizeview-component" target="_blank" rel="noopener"
+>AuthorizedView component&lt;/a>, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.&lt;/p>
+&lt;p>For the purpose of this blog, we will be using the following context:&lt;/p>
+&lt;ul>
+&lt;li>Angular 14 web app&lt;/li>
+&lt;li>MSAL Library for authentication (@azure/msal-browser &amp;amp; @azure/msal-angular)&lt;/li>
+&lt;/ul>
+&lt;p>The idea is to create a directive that injects the MSAL services, and based on the user&amp;rsquo;s authentication status, dynamically creates or clears the embedded view.&lt;/p>
+&lt;h2 id="blazor-authorizationview">Blazor AuthorizationView&lt;/h2>
+&lt;p>What is an AuthorizeView component?&lt;/p>
+&lt;p>An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don&amp;rsquo;t need to use the user&amp;rsquo;s identity in procedural logic.&lt;/p>
+&lt;script src="https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs">&lt;/script>
+&lt;p>This is the default example from the microsoft website for using the AuthorizedView component. The content of &lt;code>&amp;lt;Authorized&amp;gt;&lt;/code> and &lt;code>&amp;lt;NotAuthorized&amp;gt;&lt;/code> tags can include arbitrary items, such as other interactive components.&lt;/p>
+&lt;p>If authorization conditions aren&amp;rsquo;t specified, AuthorizeView uses a default policy:&lt;/p>
+&lt;pre>&lt;code>Authenticated (signed-in) users are authorized.
 Unauthenticated (signed-out) users are unauthorized.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;What is an AuthorizeView component?
-An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don’t need to use the user’s identity in procedural logic.&lt;/p&gt;
-&lt;script src=&#34;https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;This is the default example from the Microsoft website for using the AuthorizeView component. The content of &lt;!-- raw HTML omitted --&gt; and &lt;!-- raw HTML omitted --&gt; tags can include arbitrary items, such as other interactive components.&lt;/p&gt;
-&lt;p&gt;If authorization conditions aren’t specified, AuthorizeView uses a default policy:&lt;/p&gt;
-&lt;p&gt;Authenticated (signed-in) users are authorized.
-Unauthenticated (signed-out) users are unauthorized.&lt;/p&gt;
-&lt;h2 id=&#34;structural-directive&#34;&gt;Structural directive&lt;/h2&gt;
-&lt;p&gt;For creating the authorized directive we use an &lt;a class=&#34;link&#34; href=&#34;https://angular.io/guide/structural-directives&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;structural directive&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Structural directives are directives which change the DOM layout by adding and removing DOM elements.&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;Angular provides a set of built-in structural directives, such as NgIf, NgForOf, NgSwitch, and others, which are commonly used in all Angular projects.&lt;/p&gt;
-&lt;p&gt;This is exactly what we need for adding or removing DOM elements based on the user&amp;rsquo;s authentication status. So, let&amp;rsquo;s create a structural directive that injects the MSAL services and dynamically adds or removes the element based on the user&amp;rsquo;s authentication status.&lt;/p&gt;
-&lt;h2 id=&#34;authorized-directive&#34;&gt;*authorized directive&lt;/h2&gt;
-&lt;p&gt;So lets create the authorized structural directive. First we start with injecting the services in the constructor.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;constructor&lt;/span&gt;(
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;templateRef&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;TemplateRef&lt;/span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;any&lt;/span&gt;&amp;gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;viewContainer&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;ViewContainerRef&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;authService&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;MsalService&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastService&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;MsalBroadcastService&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;templateref--viewcontainer&#34;&gt;templateRef &amp;amp; ViewContainer&lt;/h4&gt;
-&lt;p&gt;TemplateRef helps you get to the &lt;!-- raw HTML omitted --&gt; contents and ViewContainerRef accesses the view container&lt;/p&gt;
-&lt;h4 id=&#34;authservice--broadcastservices&#34;&gt;authService $ broadcastServices&lt;/h4&gt;
-&lt;p&gt;These services are provided by the Msal library and can be used to determine if a user is authorized (authService) and listen to authorization-related events (broadcastService).&lt;/p&gt;
-&lt;p&gt;In the ngOnInit function, we subscribe to the InteractionStatus &amp;ldquo;None&amp;rdquo; event. This event is fired when an interaction is complete. We subscribe to this event so that when this event is fired, we can determine if the element should be added or removed from the DOM.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ngOnInit&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastSubscription&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastService&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;inProgress$&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;pipe&lt;/span&gt;(
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;((&lt;span style=&#34;color:#a6e22e&#34;&gt;eventType&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;InteractionStatus&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;eventType&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InteractionStatus&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;None&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;takeUntil&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ).&lt;span style=&#34;color:#a6e22e&#34;&gt;subscribe&lt;/span&gt;(() &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;setDisplay&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    });
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As you can see, we use the rxjs takeUntil operator for cleaning up the subscription. The takeUntil operator emits the values emitted by the source Observable until a notifier Observable emits a value.&lt;/p&gt;
-&lt;p&gt;To make this work, we need to declare two private properties.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;readonly&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subject&lt;/span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;void&lt;/span&gt;&amp;gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastSubscription&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;!:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subscription&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;_destroying$:&lt;/strong&gt; observable for notifying the takeUntil&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;broadcastSubscription:&lt;/strong&gt; Subscription we need to clean up when the element is destroyed
-Now it&amp;rsquo;s time to add the function which contains the logic for adding or removing the element based on the authentication status.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setDisplay&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;account&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;authService&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;instance&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;getActiveAccount&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;account&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;viewContainer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;createEmbeddedView&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;templateRef&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;account&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;viewContainer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;clear&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hasView&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;First, we get the active account from the authService. If an active account is returned, we know that the user is authenticated. Also, we check if the element is already added. If not, then we can create the element in the container and update the hasView value. When the user isn&amp;rsquo;t authenticated and the template was created in the container, we need to clear the container.&lt;/p&gt;
-&lt;p&gt;To clean up the mess we made, we use the ngOnDestroy to clean up the subscriptions when the component is destroyed.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ngOnDestroy&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;next&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;undefined&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;_destroying$&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;complete&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;broadcastSubscription&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;unsubscribe&lt;/span&gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we have a structural directive that we can place on elements which should be added or removed based on the user&amp;rsquo;s authentication status. If we put it all together, we get the following directive:&lt;/p&gt;
-&lt;script src=&#34;https://gist.github.com/arthurvandijk/863e16cb0ec531e2385ddd1cb48d6492.js?file=authorized.directive.ts&#34;&gt;&lt;/script&gt;
-
-</description>
-        </item>
-        <item>
-        <title></title>
-        <link>http://localhost:1313/post/github-copilot-custom-prompts/copilot_custom_prompts/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/post/github-copilot-custom-prompts/copilot_custom_prompts/</guid>
-        <description>&lt;h1 id=&#34;customizing-github-copilot-with-custom-instructions-and-prompt-files&#34;&gt;Customizing GitHub Copilot with Custom Instructions and Prompt Files&lt;/h1&gt;
-&lt;p&gt;GitHub Copilot Chat can be tailored to your project’s needs using &lt;strong&gt;custom instructions&lt;/strong&gt; and &lt;strong&gt;prompt files&lt;/strong&gt;. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a &lt;code&gt;.prompt.md&lt;/code&gt; suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.&lt;/p&gt;
-&lt;h2 id=&#34;custom-instructions-what-and-how&#34;&gt;Custom Instructions: What and How&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Custom instructions&lt;/strong&gt; are Markdown files (e.g. &lt;code&gt;.github/copilot-instructions.md&lt;/code&gt; or &lt;code&gt;*.instructions.md&lt;/code&gt;) that describe your coding practices, project requirements, or task-specific rules. For example, you might tell Copilot to “use XUnit for C# tests” or “format JSON with 2-space indentation”. When you open a Copilot Chat, VS Code automatically includes all instruction files whose patterns match the current context (e.g. file type or folder). This means you don’t have to repeat the same guidelines in every prompt – Copilot “remembers” them from your instruction files.&lt;/p&gt;
-&lt;p&gt;To configure custom instructions:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;File format &amp;amp; location:&lt;/strong&gt; Create a Markdown file with a &lt;code&gt;.instructions.md&lt;/code&gt; suffix. By default, workspace instructions go under &lt;code&gt;.github/instructions/&lt;/code&gt;, or you can use the legacy &lt;code&gt;.github/copilot-instructions.md&lt;/code&gt; at the repo root.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;YAML front matter:&lt;/strong&gt; Optionally include a YAML header with metadata like &lt;code&gt;applyTo:&lt;/code&gt;. The &lt;code&gt;applyTo&lt;/code&gt; property takes glob patterns to control when the instructions apply. For instance, &lt;code&gt;applyTo: &amp;quot;**/*.cs&amp;quot;&lt;/code&gt; makes the instructions automatically apply only to C# files.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Content:&lt;/strong&gt; Below the header, write your guidelines in plain English using Markdown (lists, paragraphs, code blocks, etc.).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;applyTo: &amp;#34;**/*.cs&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Always use the XUnit framework for C# unit tests.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Write test methods with &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; attributes.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Use &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt; for value assertions and include edge cases.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;prompt-files-defining-reusable-chat-prompts&#34;&gt;Prompt Files: Defining Reusable Chat Prompts&lt;/h2&gt;
-&lt;p&gt;A &lt;strong&gt;prompt file&lt;/strong&gt; (&lt;code&gt;.prompt.md&lt;/code&gt;) is a Markdown template for a Copilot Chat query. It can include static instructions, example context, and even reference code files. Prompt files let you save common tasks (like “generate tests for a file”) so you can reuse them easily.&lt;/p&gt;
-&lt;h3 id=&#34;prompt-file-structure&#34;&gt;Prompt File Structure&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mode: &amp;#39;ask&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;description: &amp;#39;Generate XUnit tests for a given C# file.&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Write comprehensive XUnit unit tests for the C# file &lt;span style=&#34;color:#e6db74&#34;&gt;`${input:filename}`&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Cover typical cases and edge cases. Use &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; attributes and &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt; for value assertions.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;how-to-use-prompt-files-in-vs-code&#34;&gt;How to Use Prompt Files in VS Code&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;Enable prompt files: in &lt;code&gt;settings.json&lt;/code&gt;, add&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;chat.promptFiles&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;Place your prompt files under &lt;code&gt;.github/prompts/&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Run via Copilot Chat using:&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;/Generate Unit Tests: filename&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;MyClass.cs
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;setting-up-instructions-and-prompts&#34;&gt;Setting Up Instructions and Prompts&lt;/h2&gt;
-&lt;h3 id=&#34;instruction-file-example&#34;&gt;Instruction File Example&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;.github/instructions/test-guidelines.instructions.md&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;applyTo: &amp;#34;**/*.cs&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Always use the XUnit framework for C# unit tests.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Use &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; for test methods.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;-&lt;/span&gt; Use &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt; and test edge cases.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;prompt-file-example&#34;&gt;Prompt File Example&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;.github/prompts/generate-tests.prompt.md&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mode: &amp;#39;ask&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;description: &amp;#39;Generate XUnit tests for a C# file.&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Write comprehensive XUnit unit tests for the C# file &lt;span style=&#34;color:#e6db74&#34;&gt;`${input:filename}`&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Cover typical cases and edge cases. Use &lt;span style=&#34;color:#e6db74&#34;&gt;`[Fact]`&lt;/span&gt; and &lt;span style=&#34;color:#e6db74&#34;&gt;`Assert.Equal`&lt;/span&gt;.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;demo-xunit-tests-for-fibonacci-generator&#34;&gt;Demo: XUnit Tests for Fibonacci Generator&lt;/h2&gt;
-&lt;h3 id=&#34;c-implementation&#34;&gt;C# Implementation&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;FibonacciGenerator&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] Generate(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; n) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (n &amp;lt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArgumentException(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;n must be non-negative&amp;#34;&lt;/span&gt;, nameof(n));
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (n == &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Array.Empty&amp;lt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&amp;gt;();
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] result = &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[n];
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        result[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] = &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (n &amp;gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            result[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] = &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; i = &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;; i &amp;lt; n; i++) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                result[i] = result[i-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] + result[i-&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;];
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; result;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;generated-unit-tests&#34;&gt;Generated Unit Tests&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-csharp&#34; data-lang=&#34;csharp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;FibonacciGeneratorTests&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;    [Fact]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Generate_ReturnsSequence_ForPositiveInput() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] result = FibonacciGenerator.Generate(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Assert.Equal(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] { &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; }, result);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;    [Fact]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Generate_ReturnsEmpty_ForZero() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;[] result = FibonacciGenerator.Generate(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Assert.Empty(result);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;    [Fact]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Generate_ThrowsArgumentException_ForNegative() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Assert.Throws&amp;lt;ArgumentException&amp;gt;(() =&amp;gt; FibonacciGenerator.Generate(-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;));
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;how-prompts-and-instructions-work-together&#34;&gt;How Prompts and Instructions Work Together&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Instructions&lt;/strong&gt; define global behavior per file type (e.g., C# = use XUnit).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Prompts&lt;/strong&gt; define the task (e.g., &amp;ldquo;write tests for this file&amp;rdquo;).&lt;/li&gt;
-&lt;li&gt;VS Code combines both into the chat context automatically.&lt;/li&gt;
-&lt;li&gt;Variables like &lt;code&gt;${input:filename}&lt;/code&gt; and file references like &lt;code&gt;#file:&lt;/code&gt; give dynamic, contextual behavior.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;By using custom instructions and prompts together, GitHub Copilot becomes a powerful tool tailored to your development workflow. Define coding standards once with instructions, and reuse smart, parameterized task flows via prompts. In our .NET example, this enabled automated test generation for any class in a consistent and idiomatic way.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;References:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://code.visualstudio.com/docs/copilot/copilot-customization&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;VS Code Copilot Customization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;GitHub Docs: Adding Repository Custom Instructions&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        
-    </channel>
-</rss>
+&lt;/code>&lt;/pre>
+&lt;p>What is an AuthorizeView component?
+An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don’t need to use the user’s identity in procedural logic.&lt;/p>
+&lt;script src="https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs">&lt;/script>
+&lt;p>This is the default example from the Microsoft website for using the AuthorizeView component. The content of &lt;!-- raw HTML omitted --> and &lt;!-- raw HTML omitted --> tags can include arbitrary items, such as other interactive components.&lt;/p>
+&lt;p>If authorization conditions aren’t specified, AuthorizeView uses a default policy:&lt;/p>
+&lt;p>Authenticated (signed-in) users are authorized.
+Unauthenticated (signed-out) users are unauthorized.&lt;/p>
+&lt;h2 id="structural-directive">Structural directive&lt;/h2>
+&lt;p>For creating the authorized directive we use an &lt;a class="link" href="https://angular.io/guide/structural-directives" target="_blank" rel="noopener"
+>structural directive&lt;/a>.&lt;/p>
+&lt;blockquote>
+&lt;p>Structural directives are directives which change the DOM layout by adding and removing DOM elements.&lt;/p>&lt;/blockquote>
+&lt;p>Angular provides a set of built-in structural directives, such as NgIf, NgForOf, NgSwitch, and others, which are commonly used in all Angular projects.&lt;/p>
+&lt;p>This is exactly what we need for adding or removing DOM elements based on the user&amp;rsquo;s authentication status. So, let&amp;rsquo;s create a structural directive that injects the MSAL services and dynamically adds or removes the element based on the user&amp;rsquo;s authentication status.&lt;/p>
+&lt;h2 id="authorized-directive">*authorized directive&lt;/h2>
+&lt;p>So lets create the authorized structural directive. First we start with injecting the services in the constructor.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">constructor&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">templateRef&lt;/span>: &lt;span style="color:#66d9ef">TemplateRef&lt;/span>&amp;lt;&lt;span style="color:#f92672">any&lt;/span>&amp;gt;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">viewContainer&lt;/span>: &lt;span style="color:#66d9ef">ViewContainerRef&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">authService&lt;/span>: &lt;span style="color:#66d9ef">MsalService&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">broadcastService&lt;/span>: &lt;span style="color:#66d9ef">MsalBroadcastService&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="templateref--viewcontainer">templateRef &amp;amp; ViewContainer&lt;/h4>
+&lt;p>TemplateRef helps you get to the &lt;!-- raw HTML omitted --> contents and ViewContainerRef accesses the view container&lt;/p>
+&lt;h4 id="authservice--broadcastservices">authService $ broadcastServices&lt;/h4>
+&lt;p>These services are provided by the Msal library and can be used to determine if a user is authorized (authService) and listen to authorization-related events (broadcastService).&lt;/p>
+&lt;p>In the ngOnInit function, we subscribe to the InteractionStatus &amp;ldquo;None&amp;rdquo; event. This event is fired when an interaction is complete. We subscribe to this event so that when this event is fired, we can determine if the element should be added or removed from the DOM.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">ngOnInit&lt;/span>()&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">broadcastSubscription&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">broadcastService&lt;/span>.&lt;span style="color:#a6e22e">inProgress$&lt;/span>.&lt;span style="color:#a6e22e">pipe&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">filter&lt;/span>((&lt;span style="color:#a6e22e">eventType&lt;/span>: &lt;span style="color:#66d9ef">InteractionStatus&lt;/span>) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">eventType&lt;/span> &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#a6e22e">InteractionStatus&lt;/span>.&lt;span style="color:#a6e22e">None&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">takeUntil&lt;/span>(&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">_destroying$&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ).&lt;span style="color:#a6e22e">subscribe&lt;/span>(() &lt;span style="color:#f92672">=&amp;gt;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">setDisplay&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>As you can see, we use the rxjs takeUntil operator for cleaning up the subscription. The takeUntil operator emits the values emitted by the source Observable until a notifier Observable emits a value.&lt;/p>
+&lt;p>To make this work, we need to declare two private properties.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">readonly&lt;/span> &lt;span style="color:#a6e22e">_destroying$&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">Subject&lt;/span>&amp;lt;&lt;span style="color:#f92672">void&lt;/span>&amp;gt;();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">broadcastSubscription&lt;/span>&lt;span style="color:#f92672">!:&lt;/span> &lt;span style="color:#a6e22e">Subscription&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;strong>_destroying$:&lt;/strong> observable for notifying the takeUntil&lt;/li>
+&lt;li>&lt;strong>broadcastSubscription:&lt;/strong> Subscription we need to clean up when the element is destroyed
+Now it&amp;rsquo;s time to add the function which contains the logic for adding or removing the element based on the authentication status.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#a6e22e">setDisplay&lt;/span>()&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">account&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">authService&lt;/span>.&lt;span style="color:#a6e22e">instance&lt;/span>.&lt;span style="color:#a6e22e">getActiveAccount&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#a6e22e">account&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">viewContainer&lt;/span>.&lt;span style="color:#a6e22e">createEmbeddedView&lt;/span>(&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">templateRef&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#a6e22e">account&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">viewContainer&lt;/span>.&lt;span style="color:#a6e22e">clear&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">hasView&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>First, we get the active account from the authService. If an active account is returned, we know that the user is authenticated. Also, we check if the element is already added. If not, then we can create the element in the container and update the hasView value. When the user isn&amp;rsquo;t authenticated and the template was created in the container, we need to clear the container.&lt;/p>
+&lt;p>To clean up the mess we made, we use the ngOnDestroy to clean up the subscriptions when the component is destroyed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-typescript" data-lang="typescript">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">ngOnDestroy&lt;/span>()&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">_destroying$&lt;/span>.&lt;span style="color:#a6e22e">next&lt;/span>(&lt;span style="color:#66d9ef">undefined&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">_destroying$&lt;/span>.&lt;span style="color:#a6e22e">complete&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">broadcastSubscription&lt;/span>.&lt;span style="color:#a6e22e">unsubscribe&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now we have a structural directive that we can place on elements which should be added or removed based on the user&amp;rsquo;s authentication status. If we put it all together, we get the following directive:&lt;/p>
+&lt;script src="https://gist.github.com/arthurvandijk/863e16cb0ec531e2385ddd1cb48d6492.js?file=authorized.directive.ts">&lt;/script></description></item><item><title/><link>https://blogs.homeport-hub.nl/post/copilot-glob-patterns/copilot_glob_patterns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blogs.homeport-hub.nl/post/copilot-glob-patterns/copilot_glob_patterns/</guid><description>&lt;h1 id="deep-dive-glob-patterns-in-github-copilot-custom-instructions">Deep Dive: Glob Patterns in GitHub Copilot Custom Instructions&lt;/h1>
+&lt;p>GitHub Copilot’s custom instructions (also known as custom prompts) let you provide project-specific guidance to the AI. By creating a repository file (typically &lt;code>.github/copilot-instructions.md&lt;/code> or &lt;code>*.instructions.md&lt;/code> in VS Code) you can tailor Copilot’s behavior to your team’s conventions and tools [&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode" target="_blank" rel="noopener"
+>github-docs&lt;/a>]. Organizing these instructions with &lt;code>applyTo&lt;/code> filters improves maintainability: each instruction file can automatically apply only to matching files or folders, so you don’t have to duplicate or manually attach guidance. For example, setting &lt;code>applyTo: &amp;quot;**&amp;quot;&lt;/code> applies instructions to &lt;em>all&lt;/em> files, whereas more specific patterns target only relevant code [&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode" target="_blank" rel="noopener"
+>github-docs&lt;/a>]. This keeps your instructions clean and focused on the files where they matter [&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode" target="_blank" rel="noopener"
+>github-docs&lt;/a>].&lt;/p>
+&lt;h2 id="understanding-glob-patterns">Understanding Glob Patterns&lt;/h2>
+&lt;p>Glob patterns are a lightweight syntax for matching file paths. They use wildcards like &lt;code>*&lt;/code> and &lt;code>**&lt;/code> to match characters or directory levels.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>*&lt;/code> matches any sequence of characters &lt;em>within&lt;/em> a single path segment. For example, &lt;code>*.ts&lt;/code> matches all TypeScript files in the current directory [&lt;a class="link" href="https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options" target="_blank" rel="noopener"
+>vscode-advanced-search&lt;/a>].&lt;/li>
+&lt;li>&lt;code>**&lt;/code> is a recursive wildcard that matches any number of directories (including zero). For example, &lt;code>**/*.md&lt;/code> matches all Markdown files in the current directory and &lt;strong>any&lt;/strong> subdirectory [&lt;a class="link" href="https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options" target="_blank" rel="noopener"
+>vscode-advanced-search&lt;/a>].&lt;/li>
+&lt;li>&lt;code>?&lt;/code> matches exactly one character (e.g. &lt;code>file?.js&lt;/code> would match &lt;code>file1.js&lt;/code> or &lt;code>fileA.js&lt;/code> but not &lt;code>file10.js&lt;/code>). Character classes (e.g. &lt;code>[abc]&lt;/code>) match any one character in the brackets, and you can use ranges (&lt;code>[A-Z]&lt;/code>, &lt;code>[0-9]&lt;/code>) or negation (&lt;code>[!abc]&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;p>You can combine patterns (e.g., using &lt;code>{...}&lt;/code> or comma-separated lists) to match multiple extensions. For example, &lt;code>**/*.{js,ts,tsx}&lt;/code> can target several file types at once. Copilot’s &lt;code>applyTo&lt;/code> field supports comma-separated patterns, such as &lt;code>&amp;quot;**/*.ts,**/*.tsx&amp;quot;&lt;/code>, which matches both &lt;code>.ts&lt;/code> and &lt;code>.tsx&lt;/code> files [&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode" target="_blank" rel="noopener"
+>github-docs&lt;/a>].&lt;/p>
+&lt;h2 id="using-glob-patterns-in-copilot-custom-instructions">Using Glob Patterns in Copilot Custom Instructions&lt;/h2>
+&lt;p>In a Copilot instructions file (a Markdown file with an optional YAML-like header), you can specify an &lt;code>applyTo&lt;/code> metadata property to automatically apply the instructions to certain files. For example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.ts,**/*.tsx&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use &lt;span style="color:#e6db74">`PascalCase`&lt;/span> for component names and always define Prop interfaces. Prefer React Hooks and functional components for new React files.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here, the &lt;code>applyTo&lt;/code> line tells Copilot to attach these instructions to any TypeScript or TSX file in the workspace [&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode" target="_blank" rel="noopener"
+>github-docs&lt;/a>].&lt;/p>
+&lt;h2 id="examples-in-real-projects">Examples in Real Projects&lt;/h2>
+&lt;h3 id="frontend-reacttypescript">Frontend (React/TypeScript)&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.tsx,**/*.ts&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">**React/TypeScript Guidelines:**&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="font-weight:bold">**functional components**&lt;/span> and React Hooks (no class components).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always define component props via &lt;span style="font-weight:bold">**TypeScript interfaces**&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Import CSS modules or styled-components for styling (avoid global CSS).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`react-query`&lt;/span> or similar for data fetching instead of manual &lt;span style="color:#e6db74">`fetch`&lt;/span> calls.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="backend-netc">Backend (.NET/C#)&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.cs&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">**C# Backend Conventions:**&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`PascalCase`&lt;/span> for all public class, method, and property names.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Handle async I/O with &lt;span style="color:#e6db74">`async`&lt;/span>/&lt;span style="color:#e6db74">`await`&lt;/span>; do not use &lt;span style="color:#e6db74">`.Result`&lt;/span> or &lt;span style="color:#e6db74">`.Wait()`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always use the &lt;span style="color:#e6db74">`ILogger`&lt;/span> interface for logging (do not write to console directly).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Follow the company’s DI framework for service registration.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Validate all web request models with Data Annotations.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="web-api-nodejstypescript">Web API (Node.js/TypeScript)&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;routes/**/*.js,src/api/**/*.ts&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">**API Project Guidelines:**&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use &lt;span style="color:#e6db74">`express.Router()`&lt;/span> for defining endpoints (organize routes by feature).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always return appropriate HTTP status codes.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Validate request bodies with a schema (e.g. use &lt;span style="color:#e6db74">`Joi`&lt;/span> or &lt;span style="color:#e6db74">`ajv`&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Include descriptive comments for each endpoint function.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Log errors using a centralized middleware.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="unit-test-projects">Unit Test Projects&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>applyTo: &amp;#34;**/*.test.js,**/*.spec.ts,**/tests/**/*.ts&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">**Unit Test Guidelines:**&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Use descriptive test case names.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Structure tests with Arrange/Act/Assert comments or blocks.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Always reset mocks/spies in an &lt;span style="color:#e6db74">`afterEach`&lt;/span> block.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> For C#: Place xUnit tests under a &lt;span style="color:#e6db74">`Tests/`&lt;/span> folder and use &lt;span style="color:#e6db74">`[Fact]`&lt;/span>/&lt;span style="color:#e6db74">`[Theory]`&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">-&lt;/span> Aim for at least 80% coverage on new features.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>Glob patterns offer a powerful way to &lt;strong>scope&lt;/strong> Copilot’s custom instructions to the right parts of your codebase. By leveraging these filters and organizing instruction files carefully, teams can maintain clean, focused AI guidance that evolves with the project.&lt;/p>
+&lt;p>&lt;strong>Sources:&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot?tool=vscode" target="_blank" rel="noopener"
+>GitHub Docs: Adding Repository Custom Instructions&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://code.visualstudio.com/docs/copilot/copilot-customization#_instructions-file-structure" target="_blank" rel="noopener"
+>VS Code Copilot Customization&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options" target="_blank" rel="noopener"
+>VS Code: Advanced Search&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>
