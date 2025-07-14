@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Customizing GitHub Copilot with Custom Instructions and Prompt Files GitHub Copilot Chat can be tailored to your project’s needs using custom instructions and prompt files. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a .prompt.md suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.
+'>
+<title>Customizing GitHub Copilot with Custom Instructions and Prompt Files</title>
+
+<link rel='canonical' href='http://localhost:1313/post/github-copilot-custom-prompts/copilot_custom_prompts/'>
+
+<link rel="stylesheet" href="/scss/style.min.2d59822570c0be136f2ad87c952ef8788ac2a951067adda1c49b253bff7d0292.css"><meta property='og:title' content='Customizing GitHub Copilot with Custom Instructions and Prompt Files'>
+<meta property='og:description' content='Customizing GitHub Copilot with Custom Instructions and Prompt Files GitHub Copilot Chat can be tailored to your project’s needs using custom instructions and prompt files. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a .prompt.md suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.
+'>
+<meta property='og:url' content='http://localhost:1313/post/github-copilot-custom-prompts/copilot_custom_prompts/'>
+<meta property='og:site_name' content='Arthurs Blogs'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Github' /><meta property='article:tag' content='Github Copilot' /><meta property='article:tag' content='AI' /><meta property='article:tag' content='Custom Prompts' /><meta property='article:tag' content='Custom Instructions' /><meta property='article:published_time' content='2025-07-13T22:10:00&#43;02:00'/><meta property='article:modified_time' content='2025-07-13T22:10:00&#43;02:00'/>
+<meta name="twitter:title" content="Customizing GitHub Copilot with Custom Instructions and Prompt Files">
+<meta name="twitter:description" content="Customizing GitHub Copilot with Custom Instructions and Prompt Files GitHub Copilot Chat can be tailored to your project’s needs using custom instructions and prompt files. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a .prompt.md suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.
+">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_2c296db010713628.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Arthurs Blogs</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://localhost:1313/" selected></option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tutorial/" >
+                Tutorial
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/github-copilot-custom-prompts/copilot_custom_prompts/">Customizing GitHub Copilot with Custom Instructions and Prompt Files</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 13, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="customizing-github-copilot-with-custom-instructions-and-prompt-files">Customizing GitHub Copilot with Custom Instructions and Prompt Files</h1>
+<p>GitHub Copilot Chat can be tailored to your project’s needs using <strong>custom instructions</strong> and <strong>prompt files</strong>. Custom instructions are project-wide guidelines or rules (written in Markdown) that Copilot automatically includes in every relevant chat, ensuring AI responses match your team’s style and standards. Prompt files (with a <code>.prompt.md</code> suffix) are reusable chat templates you define in your workspace. They contain natural-language instructions and context references, and can accept parameters or include file contents to guide Copilot on a specific task. In this post, we’ll explain how to set up both features and walk through a demo: generating XUnit tests for a C# Fibonacci generator using a custom prompt.</p>
+<h2 id="custom-instructions-what-and-how">Custom Instructions: What and How</h2>
+<p><strong>Custom instructions</strong> are Markdown files (e.g. <code>.github/copilot-instructions.md</code> or <code>*.instructions.md</code>) that describe your coding practices, project requirements, or task-specific rules. For example, you might tell Copilot to “use XUnit for C# tests” or “format JSON with 2-space indentation”. When you open a Copilot Chat, VS Code automatically includes all instruction files whose patterns match the current context (e.g. file type or folder). This means you don’t have to repeat the same guidelines in every prompt – Copilot “remembers” them from your instruction files.</p>
+<p>To configure custom instructions:</p>
+<ul>
+<li><strong>File format &amp; location:</strong> Create a Markdown file with a <code>.instructions.md</code> suffix. By default, workspace instructions go under <code>.github/instructions/</code>, or you can use the legacy <code>.github/copilot-instructions.md</code> at the repo root.</li>
+<li><strong>YAML front matter:</strong> Optionally include a YAML header with metadata like <code>applyTo:</code>. The <code>applyTo</code> property takes glob patterns to control when the instructions apply. For instance, <code>applyTo: &quot;**/*.cs&quot;</code> makes the instructions automatically apply only to C# files.</li>
+<li><strong>Content:</strong> Below the header, write your guidelines in plain English using Markdown (lists, paragraphs, code blocks, etc.).</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>applyTo: &#34;**/*.cs&#34;
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Always use the XUnit framework for C# unit tests.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Write test methods with <span style="color:#e6db74">`[Fact]`</span> attributes.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Use <span style="color:#e6db74">`Assert.Equal`</span> for value assertions and include edge cases.
+</span></span></code></pre></div><h2 id="prompt-files-defining-reusable-chat-prompts">Prompt Files: Defining Reusable Chat Prompts</h2>
+<p>A <strong>prompt file</strong> (<code>.prompt.md</code>) is a Markdown template for a Copilot Chat query. It can include static instructions, example context, and even reference code files. Prompt files let you save common tasks (like “generate tests for a file”) so you can reuse them easily.</p>
+<h3 id="prompt-file-structure">Prompt File Structure</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>mode: &#39;agent&#39;
+</span></span><span style="display:flex;"><span>description: &#39;Generate XUnit tests for a given C# file.&#39;
+</span></span><span style="display:flex;"><span>tools: [&#39;codebase&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;, &#39;testFailure&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;findTestFiles&#39;]
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>Write comprehensive XUnit unit tests for the C# file <span style="color:#e6db74">`${input:filename}`</span>. 
+</span></span><span style="display:flex;"><span>Cover typical cases and edge cases. Use <span style="color:#e6db74">`[Fact]`</span> attributes and <span style="color:#e6db74">`Assert.Equal`</span> for value assertions.
+</span></span><span style="display:flex;"><span>Use available tools to retrieve file content and verify its structure before test generation.
+</span></span></code></pre></div><h3 id="why-use-mode-agent-and-tools">Why Use Mode: &lsquo;agent&rsquo; and Tools?</h3>
+<p>Setting <code>mode: 'agent'</code> enables Copilot to act autonomously using the provided tools. This allows it to:</p>
+<ul>
+<li>Search and open the correct file using <code>search</code> and <code>codebase</code></li>
+<li>Inspect file content contextually before writing tests</li>
+<li>Create or update test files using <code>editFiles</code></li>
+<li>Use <code>runCommands</code> or <code>testFailure</code> to understand failing test cases (optional)</li>
+<li>Navigate test structure via <code>findTestFiles</code> and <code>usages</code></li>
+</ul>
+<p>This setup transforms the prompt from a static question into a smart agent-based workflow that can operate across your codebase.</p>
+<h3 id="how-to-use-prompt-files-in-vs-code">How to Use Prompt Files in VS Code</h3>
+<ol>
+<li>Enable prompt files: in <code>settings.json</code>, add</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;chat.promptFiles&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#66d9ef">true</span>
+</span></span></code></pre></div><ol start="2">
+<li>Place your prompt files under <code>.github/prompts/</code>.</li>
+<li>Run via Copilot Chat using:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/Generate Unit Tests: filename<span style="color:#f92672">=</span>MyClass.cs
+</span></span></code></pre></div><h2 id="setting-up-instructions-and-prompts">Setting Up Instructions and Prompts</h2>
+<h3 id="instruction-file-example">Instruction File Example</h3>
+<p><code>.github/instructions/test-guidelines.instructions.md</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>applyTo: &#34;**/*.cs&#34;
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Always use the XUnit framework for C# unit tests.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Use <span style="color:#e6db74">`[Fact]`</span> for test methods.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Use <span style="color:#e6db74">`Assert.Equal`</span> and test edge cases.
+</span></span></code></pre></div><h3 id="prompt-file-example">Prompt File Example</h3>
+<p><code>.github/prompts/generate-tests.prompt.md</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>mode: &#39;agent&#39;
+</span></span><span style="display:flex;"><span>description: &#39;Generate XUnit tests for a C# file.&#39;
+</span></span><span style="display:flex;"><span>tools: [&#39;codebase&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;, &#39;testFailure&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;findTestFiles&#39;]
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>Write comprehensive XUnit unit tests for the C# file <span style="color:#e6db74">`${input:filename}`</span>.
+</span></span><span style="display:flex;"><span>Cover typical cases and edge cases. Use <span style="color:#e6db74">`[Fact]`</span> and <span style="color:#e6db74">`Assert.Equal`</span>.
+</span></span><span style="display:flex;"><span>Use available tools to read file content and test structure.
+</span></span></code></pre></div><h2 id="demo-xunit-tests-for-fibonacci-generator">Demo: XUnit Tests for Fibonacci Generator</h2>
+<h3 id="c-implementation">C# Implementation</h3>
+<p>Imagine you&rsquo;re working on a .NET backend project where performance and correctness of core algorithmic components are critical. One such component is a utility class responsible for generating Fibonacci sequences, used across several services for simulation or computation purposes.</p>
+<p>You&rsquo;ve written the initial implementation, but you want to ensure it&rsquo;s well-tested before integrating it into the main pipeline. Rather than manually writing all unit tests, you use your configured Copilot agent prompt to automate the process—saving time while ensuring consistency and coverage.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FibonacciGenerator</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span>[] Generate(<span style="color:#66d9ef">int</span> n) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (n &lt; <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ArgumentException(<span style="color:#e6db74">&#34;n must be non-negative&#34;</span>, nameof(n));
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (n == <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> Array.Empty&lt;<span style="color:#66d9ef">int</span>&gt;();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span>[] result = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span>[n];
+</span></span><span style="display:flex;"><span>        result[<span style="color:#ae81ff">0</span>] = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (n &gt; <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>            result[<span style="color:#ae81ff">1</span>] = <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">2</span>; i &lt; n; i++) {
+</span></span><span style="display:flex;"><span>                result[i] = result[i-<span style="color:#ae81ff">1</span>] + result[i-<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="running-the-custom-prompt">Running the Custom Prompt</h3>
+<p>You can now invoke the prompt with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/Generate Unit Tests: filename<span style="color:#f92672">=</span>FibonacciGenerator.cs
+</span></span></code></pre></div><p>Copilot will use <code>search</code>, <code>codebase</code>, and <code>editFiles</code> to:</p>
+<ul>
+<li>Locate the source file by name</li>
+<li>Read its content and logic</li>
+<li>Determine expected inputs and edge cases</li>
+<li>Create or update a corresponding XUnit test file in the correct test folder</li>
+</ul>
+<h3 id="generated-unit-tests">Generated Unit Tests</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FibonacciGeneratorTests</span> {
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Fact]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Generate_ReturnsSequence_ForPositiveInput() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span>[] result = FibonacciGenerator.Generate(<span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>        Assert.Equal(<span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span>[] { <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span> }, result);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Fact]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Generate_ReturnsEmpty_ForZero() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span>[] result = FibonacciGenerator.Generate(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>        Assert.Empty(result);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    [Fact]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Generate_ThrowsArgumentException_ForNegative() {
+</span></span><span style="display:flex;"><span>        Assert.Throws&lt;ArgumentException&gt;(() =&gt; FibonacciGenerator.Generate(-<span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>These tests match your coding standards (defined in instructions), and are context-aware thanks to the agent prompt.</p>
+<h2 id="how-prompts-and-instructions-work-together">How Prompts and Instructions Work Together</h2>
+<ul>
+<li><strong>Instructions</strong> define global behavior per file type (e.g., C# = use XUnit)</li>
+<li><strong>Prompts</strong> define the specific task (e.g., &ldquo;write tests for this file&rdquo;) and can invoke tools in agent mode</li>
+<li>VS Code combines both into the chat context automatically</li>
+<li>Variables like <code>${input:filename}</code> and file references like <code>#file:</code> give dynamic, contextual behavior</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>By using custom instructions and prompts together, GitHub Copilot becomes a powerful tool tailored to your development workflow. Define coding standards once with instructions, and reuse smart, parameterized task flows via prompts. Agent-based prompts and tool access allow Copilot to generate, verify, and manage files intelligently. In our .NET example, this enabled automated, consistent, and idiomatic test generation for any class.</p>
+<hr>
+<p><strong>References:</strong></p>
+<ul>
+<li><a class="link" href="https://code.visualstudio.com/docs/copilot/copilot-customization"  target="_blank" rel="noopener"
+    >VS Code Copilot Customization</a></li>
+<li><a class="link" href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot"  target="_blank" rel="noopener"
+    >GitHub Docs: Adding Repository Custom Instructions</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/github/">Github</a>
+        
+            <a href="/tags/github-copilot/">Github Copilot</a>
+        
+            <a href="/tags/ai/">AI</a>
+        
+            <a href="/tags/custom-prompts/">Custom Prompts</a>
+        
+            <a href="/tags/custom-instructions/">Custom Instructions</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Arthurs Blogs
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='The current state of Javascript, Frameworks and tools in 2022'>
+<title>State of Javascript 2022</title>
+
+<link rel='canonical' href='https://blogs.homeport-hub.nl/post/stateofjs/'>
+
+<link rel="stylesheet" href="/scss/style.min.5be32ca3f6e1a997c75795c4359147cc6d4fbd34948c0acd51e31d237033978a.css"><meta property='og:title' content='State of Javascript 2022'>
+<meta property='og:description' content='The current state of Javascript, Frameworks and tools in 2022'>
+<meta property='og:url' content='https://blogs.homeport-hub.nl/post/stateofjs/'>
+<meta property='og:site_name' content='Arthurs Blogs'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Javascript' /><meta property='article:tag' content='Frameworks' /><meta property='article:tag' content='Tools' /><meta property='article:published_time' content='2023-02-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-02-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="State of Javascript 2022">
+<meta name="twitter:description" content="The current state of Javascript, Frameworks and tools in 2022">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu8c4dd7664201acb182091d7f031b3de3_8437_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Arthurs Blogs</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/javascript/" >
+                Javascript
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/stateofjs/">State of Javascript 2022</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            The current state of Javascript, Frameworks and tools in 2022
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 09, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><em>In this blog we will look at the developments in the field of Javascript libraries, frameworks and tools.</em></p>
+<p>When you delve into the current (2022) state of developments within the Javascript ecosystem, you will soon find yourself on the site <a class="link" href="https://stateofjs.com"  target="_blank" rel="noopener"
+    >stateofjs</a>.
+you are not familiar with the stateofjs, first briefly about this site.</p>
+<h2 id="stateofjs">StateofJS</h2>
+<p>De State of Javascript draws up a survey each year to gain insight into trends within the web development ecosystem. This survey was open from November 21 to December 22 2022 and received a message <strong>39,472!!!</strong> responses.</p>
+<blockquote>
+<p>&ldquo;<em>As such, the survey is focused on anticipating what&rsquo;s coming over the next few years rather than analyzing what&rsquo;s popular now, which is why the features or technologies that are currently most widespread are not always included.&rdquo;</em> <!-- raw HTML omitted --><br>
+-<em>stateofjs</em> -</p>
+</blockquote>
+<p>this data is analyzed and processed into graphs and conclusions. These conclusions are of course their interpretation of the data, but as they themselves indicate, they use all kinds of resources to interpret this data objectively. Therefor we can say with</p>
+<h2 id="frameworks-and-libraries">Frameworks and Libraries</h2>
+<p>Frameworks en libraries within the Javascript ecosysteem can serve the same purpose, building a web application. E.g. Angular is a framework, React is a library and yet they are often compared with each other.
+For this reason we group these two categories and analyse them together. We gaan kijken naar de interesses in frameworks, tevredenheid over frameworks en het gebruik van frameworks.</p>
+<h3 id="trends">Trends</h3>
+<p>Aan de hand van interesses en tevredenheid zijn we in staat om trends te bepalen. Welke framework en/of library wordt veel gebruikt en zijn we tevreden over het gebruik van deze.
+Wanneer een nieuw(er) framework veel wordt uitgeprobeerd en we blijven terugkomen bij het framework kunnen we spreken van een trent. Als we kijken naar de trend van het afgelopen jaar valt het volgende op.</p>
+<p><img src="/post/stateofjs/images/stateofjs_interest_retentoin.png"
+	width="1381"
+	height="672"
+	srcset="/post/stateofjs/images/stateofjs_interest_retentoin_hu559f775b6a5bd1781ee479e147b5d32b_415780_480x0_resize_box_3.png 480w, /post/stateofjs/images/stateofjs_interest_retentoin_hu559f775b6a5bd1781ee479e147b5d32b_415780_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="stateofjs Interest & retention"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="205"
+		data-flex-basis="493px"
+	
+></p>
+<p>De Libraries <strong><a class="link" href="https://www.solidjs.com/"  target="_blank" rel="noopener"
+    >Solid</a></strong> en <strong><a class="link" href="https://svelte.dev/"  target="_blank" rel="noopener"
+    >Svelte</a></strong> hebben in de afgelopen jaren React en VueJS verdrongen. Beide libraries pretenderen een reactive javascript library te zijn en onderscheiden zich op deze manier van bijv. React. Waarbij er geen gebruik meer gemaakt wordt van een virtual DOM en de client het meeste werk doet, wordt bij deze libraries het meeste werk tijdens het bouwen van je app verzet. Dit komt de performance en de omvang van je web app ten goede.</p>
+<p>Men is niet alleen geintresseerd in deze libraries maar diegene die de libraries al gebruikt hebben geven ook aan nogmaals de librarie te willen gebruiken. Of deze libraries volwassen genoeg zijn voor enterprise omgevingen zal de toekomst moeten uitwijzen.</p>
+<h3 id="usage">Usage</h3>
+<p>Een trent wil nog niet zeggen dat het overal veel toegepast wordt. Zeker in enterprise omgevingen kijken we liever eerst de kat uit de boom en branden we ons niet te snel aan iets nieuws. Laat de pioneers het nieuwe maar eerst uitproberen en alle kinderziekes oplossen, daarna maar eens kijken of het toekomst heeft. Wanneer je kijkt naar de meest gebruikte frameworks zie je dat heel sterk terugkomen.</p>
+<p><img src="/post/stateofjs/images/stateofjs_usage.png"
+	width="1027"
+	height="667"
+	srcset="/post/stateofjs/images/stateofjs_usage_hub429dc7a348964f0b5ad339db921cd27_294011_480x0_resize_box_3.png 480w, /post/stateofjs/images/stateofjs_usage_hub429dc7a348964f0b5ad339db921cd27_294011_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="Stateofjs usage Front-end Frameworks & libraries"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="153"
+		data-flex-basis="369px"
+	
+></p>
+<p>De oudgediende onder de frameworks worden nog steeds het meest gebruikt. React, Angular en VueJS zijn nog steeds, en ik zie dit op korte termijn ook niet veranderen, de meest gebruikte frameworks/libraries. Naar mijn inzien komt dit voornamelijk doordat deze frameworks in enterprise omgevingen het meest gebruikt worden. Nieuwe opkomende frameworks/libraries worden niet direct gebruikt en valt men snel terug op oud en vertrouwd. Dit is natuurlijk om meerdere redenen erg logisch. Op het gebied van kennis en ervaring hebben ze een voorsprong, zijn er meer developers te vinden en heeft er veel standaardisatie met andere platformen/systemen plaats gevonden.</p>
+<h2 id="tools">Tools</h2>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/javascript/">Javascript</a>
+        
+            <a href="/tags/frameworks/">Frameworks</a>
+        
+            <a href="/tags/tools/">Tools</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Arthurs Blogs
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Authorization directive in Angular with Msal-Angular In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&rsquo;s authentication status using an authorized directive.
+When I was working on a Blazor project, I used an AuthorizedView component, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.
+'>
+<title>Angular structural Directive for authorized content</title>
+
+<link rel='canonical' href='http://localhost:1313/post/authorization-directive/authorization-directive/'>
+
+<link rel="stylesheet" href="/scss/style.min.2d59822570c0be136f2ad87c952ef8788ac2a951067adda1c49b253bff7d0292.css"><meta property='og:title' content='Angular structural Directive for authorized content'>
+<meta property='og:description' content='Authorization directive in Angular with Msal-Angular In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&rsquo;s authentication status using an authorized directive.
+When I was working on a Blazor project, I used an AuthorizedView component, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.
+'>
+<meta property='og:url' content='http://localhost:1313/post/authorization-directive/authorization-directive/'>
+<meta property='og:site_name' content='Arthurs Blogs'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Javascript' /><meta property='article:tag' content='Typescript' /><meta property='article:tag' content='Msal-Angular' /><meta property='article:tag' content='Structural directive' /><meta property='article:tag' content='Authentication' /><meta property='article:published_time' content='2023-04-20T22:10:00&#43;02:00'/><meta property='article:modified_time' content='2023-04-20T22:10:00&#43;02:00'/>
+<meta name="twitter:title" content="Angular structural Directive for authorized content">
+<meta name="twitter:description" content="Authorization directive in Angular with Msal-Angular In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&rsquo;s authentication status using an authorized directive.
+When I was working on a Blazor project, I used an AuthorizedView component, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.
+">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_2c296db010713628.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Arthurs Blogs</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="http://localhost:1313/" selected></option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/tutorial/" >
+                Tutorial
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/authorization-directive/authorization-directive/">Angular structural Directive for authorized content</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 20, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="authorization-directive-in-angular-with-msal-angular">Authorization directive in Angular with Msal-Angular</h1>
+<p>In this blog, I would like to share with you a way to dynamically add or remove elements based on the user&rsquo;s authentication status using an authorized directive.</p>
+<p>When I was working on a Blazor project, I used an <a class="link" href="https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-7.0#authorizeview-component"  target="_blank" rel="noopener"
+    >AuthorizedView component</a>, as described in the Microsoft documentation on Blazor security. This component made displaying authorized data incredibly easy. However, when I switched back to Angular, I found myself missing this component a lot. So, I decided to create my own directive based on the NgIf directive for displaying authorized data.</p>
+<p>For the purpose of this blog, we will be using the following context:</p>
+<ul>
+<li>Angular 14 web app</li>
+<li>MSAL Library for authentication (@azure/msal-browser &amp; @azure/msal-angular)</li>
+</ul>
+<p>The idea is to create a directive that injects the MSAL services, and based on the user&rsquo;s authentication status, dynamically creates or clears the embedded view.</p>
+<h2 id="blazor-authorizationview">Blazor AuthorizationView</h2>
+<p>What is an AuthorizeView component?</p>
+<p>An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don&rsquo;t need to use the user&rsquo;s identity in procedural logic.</p>
+<script src="https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs"></script>
+
+<p>This is the default example from the microsoft website for using the AuthorizedView component. The content of <code>&lt;Authorized&gt;</code> and <code>&lt;NotAuthorized&gt;</code> tags can include arbitrary items, such as other interactive components.</p>
+<p>If authorization conditions aren&rsquo;t specified, AuthorizeView uses a default policy:</p>
+<pre><code>Authenticated (signed-in) users are authorized.
+Unauthenticated (signed-out) users are unauthorized.
+</code></pre>
+<p>What is an AuthorizeView component?
+An AuthorizeView component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to display data for the user and don’t need to use the user’s identity in procedural logic.</p>
+<script src="https://gist.github.com/arthurvandijk/7e7076110a1062fdcfcd4a5387235ef1.js?file=authorized.razor.cs"></script>
+
+<p>This is the default example from the Microsoft website for using the AuthorizeView component. The content of <!-- raw HTML omitted --> and <!-- raw HTML omitted --> tags can include arbitrary items, such as other interactive components.</p>
+<p>If authorization conditions aren’t specified, AuthorizeView uses a default policy:</p>
+<p>Authenticated (signed-in) users are authorized.
+Unauthenticated (signed-out) users are unauthorized.</p>
+<h2 id="structural-directive">Structural directive</h2>
+<p>For creating the authorized directive we use an <a class="link" href="https://angular.io/guide/structural-directives"  target="_blank" rel="noopener"
+    >structural directive</a>.</p>
+<blockquote>
+<p>Structural directives are directives which change the DOM layout by adding and removing DOM elements.</p></blockquote>
+<p>Angular provides a set of built-in structural directives, such as NgIf, NgForOf, NgSwitch, and others, which are commonly used in all Angular projects.</p>
+<p>This is exactly what we need for adding or removing DOM elements based on the user&rsquo;s authentication status. So, let&rsquo;s create a structural directive that injects the MSAL services and dynamically adds or removes the element based on the user&rsquo;s authentication status.</p>
+<h2 id="authorized-directive">*authorized directive</h2>
+<p>So lets create the authorized structural directive. First we start with injecting the services in the constructor.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#66d9ef">constructor</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">templateRef</span>: <span style="color:#66d9ef">TemplateRef</span>&lt;<span style="color:#f92672">any</span>&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">viewContainer</span>: <span style="color:#66d9ef">ViewContainerRef</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">authService</span>: <span style="color:#66d9ef">MsalService</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">broadcastService</span>: <span style="color:#66d9ef">MsalBroadcastService</span>
+</span></span><span style="display:flex;"><span>  ) {
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><h4 id="templateref--viewcontainer">templateRef &amp; ViewContainer</h4>
+<p>TemplateRef helps you get to the <!-- raw HTML omitted --> contents and ViewContainerRef accesses the view container</p>
+<h4 id="authservice--broadcastservices">authService $ broadcastServices</h4>
+<p>These services are provided by the Msal library and can be used to determine if a user is authorized (authService) and listen to authorization-related events (broadcastService).</p>
+<p>In the ngOnInit function, we subscribe to the InteractionStatus &ldquo;None&rdquo; event. This event is fired when an interaction is complete. We subscribe to this event so that when this event is fired, we can determine if the element should be added or removed from the DOM.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ngOnInit</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">broadcastSubscription</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">broadcastService</span>.<span style="color:#a6e22e">inProgress$</span>.<span style="color:#a6e22e">pipe</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">filter</span>((<span style="color:#a6e22e">eventType</span>: <span style="color:#66d9ef">InteractionStatus</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">eventType</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">InteractionStatus</span>.<span style="color:#a6e22e">None</span>),
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">takeUntil</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">_destroying$</span>)
+</span></span><span style="display:flex;"><span>    ).<span style="color:#a6e22e">subscribe</span>(() <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">setDisplay</span>();
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>As you can see, we use the rxjs takeUntil operator for cleaning up the subscription. The takeUntil operator emits the values emitted by the source Observable until a notifier Observable emits a value.</p>
+<p>To make this work, we need to declare two private properties.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">_destroying$</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span>&lt;<span style="color:#f92672">void</span>&gt;();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">broadcastSubscription</span><span style="color:#f92672">!:</span> <span style="color:#a6e22e">Subscription</span>;
+</span></span></code></pre></div><ul>
+<li><strong>_destroying$:</strong> observable for notifying the takeUntil</li>
+<li><strong>broadcastSubscription:</strong> Subscription we need to clean up when the element is destroyed
+Now it&rsquo;s time to add the function which contains the logic for adding or removing the element based on the authentication status.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#a6e22e">setDisplay</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">account</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">authService</span>.<span style="color:#a6e22e">instance</span>.<span style="color:#a6e22e">getActiveAccount</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">account</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hasView</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">viewContainer</span>.<span style="color:#a6e22e">createEmbeddedView</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">templateRef</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hasView</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">account</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hasView</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">viewContainer</span>.<span style="color:#a6e22e">clear</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hasView</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>First, we get the active account from the authService. If an active account is returned, we know that the user is authenticated. Also, we check if the element is already added. If not, then we can create the element in the container and update the hasView value. When the user isn&rsquo;t authenticated and the template was created in the container, we need to clear the container.</p>
+<p>To clean up the mess we made, we use the ngOnDestroy to clean up the subscriptions when the component is destroyed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ngOnDestroy</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">_destroying$</span>.<span style="color:#a6e22e">next</span>(<span style="color:#66d9ef">undefined</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">_destroying$</span>.<span style="color:#a6e22e">complete</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">broadcastSubscription</span>.<span style="color:#a6e22e">unsubscribe</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>Now we have a structural directive that we can place on elements which should be added or removed based on the user&rsquo;s authentication status. If we put it all together, we get the following directive:</p>
+<script src="https://gist.github.com/arthurvandijk/863e16cb0ec531e2385ddd1cb48d6492.js?file=authorized.directive.ts"></script>
+
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/javascript/">Javascript</a>
+        
+            <a href="/tags/typescript/">Typescript</a>
+        
+            <a href="/tags/msal-angular/">Msal-Angular</a>
+        
+            <a href="/tags/structural-directive/">Structural Directive</a>
+        
+            <a href="/tags/authentication/">Authentication</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Arthurs Blogs
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

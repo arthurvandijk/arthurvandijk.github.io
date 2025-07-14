@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Javascript on Arthurs Blogs</title>
+        <link>https://blogs.homeport-hub.nl/categories/javascript/</link>
+        <description>Recent content in Javascript on Arthurs Blogs</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Thu, 09 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blogs.homeport-hub.nl/categories/javascript/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>State of Javascript 2022</title>
+        <link>https://blogs.homeport-hub.nl/post/stateofjs/</link>
+        <pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate>
+        
+        <guid>https://blogs.homeport-hub.nl/post/stateofjs/</guid>
+        <description>&lt;p&gt;&lt;em&gt;In this blog we will look at the developments in the field of Javascript libraries, frameworks and tools.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;When you delve into the current (2022) state of developments within the Javascript ecosystem, you will soon find yourself on the site &lt;a class=&#34;link&#34; href=&#34;https://stateofjs.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;stateofjs&lt;/a&gt;.
+you are not familiar with the stateofjs, first briefly about this site.&lt;/p&gt;
+&lt;h2 id=&#34;stateofjs&#34;&gt;StateofJS&lt;/h2&gt;
+&lt;p&gt;De State of Javascript draws up a survey each year to gain insight into trends within the web development ecosystem. This survey was open from November 21 to December 22 2022 and received a message &lt;strong&gt;39,472!!!&lt;/strong&gt; responses.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;&lt;em&gt;As such, the survey is focused on anticipating what&amp;rsquo;s coming over the next few years rather than analyzing what&amp;rsquo;s popular now, which is why the features or technologies that are currently most widespread are not always included.&amp;rdquo;&lt;/em&gt; &lt;!-- raw HTML omitted --&gt;&lt;br&gt;
+-&lt;em&gt;stateofjs&lt;/em&gt; -&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;this data is analyzed and processed into graphs and conclusions. These conclusions are of course their interpretation of the data, but as they themselves indicate, they use all kinds of resources to interpret this data objectively. Therefor we can say with&lt;/p&gt;
+&lt;h2 id=&#34;frameworks-and-libraries&#34;&gt;Frameworks and Libraries&lt;/h2&gt;
+&lt;p&gt;Frameworks en libraries within the Javascript ecosysteem can serve the same purpose, building a web application. E.g. Angular is a framework, React is a library and yet they are often compared with each other.
+For this reason we group these two categories and analyse them together. We gaan kijken naar de interesses in frameworks, tevredenheid over frameworks en het gebruik van frameworks.&lt;/p&gt;
+&lt;h3 id=&#34;trends&#34;&gt;Trends&lt;/h3&gt;
+&lt;p&gt;Aan de hand van interesses en tevredenheid zijn we in staat om trends te bepalen. Welke framework en/of library wordt veel gebruikt en zijn we tevreden over het gebruik van deze.
+Wanneer een nieuw(er) framework veel wordt uitgeprobeerd en we blijven terugkomen bij het framework kunnen we spreken van een trent. Als we kijken naar de trend van het afgelopen jaar valt het volgende op.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://blogs.homeport-hub.nl/post/stateofjs/images/stateofjs_interest_retentoin.png&#34;
+	width=&#34;1381&#34;
+	height=&#34;672&#34;
+	srcset=&#34;https://blogs.homeport-hub.nl/post/stateofjs/images/stateofjs_interest_retentoin_hu559f775b6a5bd1781ee479e147b5d32b_415780_480x0_resize_box_3.png 480w, https://blogs.homeport-hub.nl/post/stateofjs/images/stateofjs_interest_retentoin_hu559f775b6a5bd1781ee479e147b5d32b_415780_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;stateofjs Interest &amp; retention&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;205&#34;
+		data-flex-basis=&#34;493px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;De Libraries &lt;strong&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.solidjs.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Solid&lt;/a&gt;&lt;/strong&gt; en &lt;strong&gt;&lt;a class=&#34;link&#34; href=&#34;https://svelte.dev/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Svelte&lt;/a&gt;&lt;/strong&gt; hebben in de afgelopen jaren React en VueJS verdrongen. Beide libraries pretenderen een reactive javascript library te zijn en onderscheiden zich op deze manier van bijv. React. Waarbij er geen gebruik meer gemaakt wordt van een virtual DOM en de client het meeste werk doet, wordt bij deze libraries het meeste werk tijdens het bouwen van je app verzet. Dit komt de performance en de omvang van je web app ten goede.&lt;/p&gt;
+&lt;p&gt;Men is niet alleen geintresseerd in deze libraries maar diegene die de libraries al gebruikt hebben geven ook aan nogmaals de librarie te willen gebruiken. Of deze libraries volwassen genoeg zijn voor enterprise omgevingen zal de toekomst moeten uitwijzen.&lt;/p&gt;
+&lt;h3 id=&#34;usage&#34;&gt;Usage&lt;/h3&gt;
+&lt;p&gt;Een trent wil nog niet zeggen dat het overal veel toegepast wordt. Zeker in enterprise omgevingen kijken we liever eerst de kat uit de boom en branden we ons niet te snel aan iets nieuws. Laat de pioneers het nieuwe maar eerst uitproberen en alle kinderziekes oplossen, daarna maar eens kijken of het toekomst heeft. Wanneer je kijkt naar de meest gebruikte frameworks zie je dat heel sterk terugkomen.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://blogs.homeport-hub.nl/post/stateofjs/images/stateofjs_usage.png&#34;
+	width=&#34;1027&#34;
+	height=&#34;667&#34;
+	srcset=&#34;https://blogs.homeport-hub.nl/post/stateofjs/images/stateofjs_usage_hub429dc7a348964f0b5ad339db921cd27_294011_480x0_resize_box_3.png 480w, https://blogs.homeport-hub.nl/post/stateofjs/images/stateofjs_usage_hub429dc7a348964f0b5ad339db921cd27_294011_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Stateofjs usage Front-end Frameworks &amp; libraries&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;153&#34;
+		data-flex-basis=&#34;369px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;De oudgediende onder de frameworks worden nog steeds het meest gebruikt. React, Angular en VueJS zijn nog steeds, en ik zie dit op korte termijn ook niet veranderen, de meest gebruikte frameworks/libraries. Naar mijn inzien komt dit voornamelijk doordat deze frameworks in enterprise omgevingen het meest gebruikt worden. Nieuwe opkomende frameworks/libraries worden niet direct gebruikt en valt men snel terug op oud en vertrouwd. Dit is natuurlijk om meerdere redenen erg logisch. Op het gebied van kennis en ervaring hebben ze een voorsprong, zijn er meer developers te vinden en heeft er veel standaardisatie met andere platformen/systemen plaats gevonden.&lt;/p&gt;
+&lt;h2 id=&#34;tools&#34;&gt;Tools&lt;/h2&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
